@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".BallycastleActivity">
+
+
+    <TextView
+        android:id="@+id/selectSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Please select a puzzle to solve"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/spinner_ballycastle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectSpinner"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/fullPuzzle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_ballycastle"
+        android:layout_marginTop="30dp"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/answerPuzzle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fullPuzzle"
+        android:layout_marginTop="50dp"
+        android:text="Please answer this puzzle below"
+        android:textColor="#F44336"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/answerBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/answerPuzzle"
+        android:layout_marginTop="50dp"
+        android:hint="Enter your answer here"
+        android:textAlignment="viewStart" />
+
+    <Button
+        android:id="@+id/btnAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Solve puzzle"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/answerBox"/>
+</RelativeLayout>

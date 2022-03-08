@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".LocationActivity">
+
+    <Button
+        android:id="@+id/btnhome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to home"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp" />
+
+    <Button
+        android:id="@+id/btnballycastle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnhome"
+        android:layout_marginTop="100dp"
+        android:text="Ballycastle's puzzles"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnbelfast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belfast's puzzles"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/btnballycastle"/>
+
+</RelativeLayout>

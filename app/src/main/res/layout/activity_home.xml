@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".HomeActivity">
+
+    <Button
+        android:id="@+id/btnsolvepuzzles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Solve puzzles"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp" />
+
+    <Button
+        android:id="@+id/btncompletedpuzzles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnsolvepuzzles"
+        android:layout_marginTop="100dp"
+        android:text="Completed Puzzles"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnhowtoplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How to play"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/btncompletedpuzzles"/>
+
+    <Button
+        android:id="@+id/btnlogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:textColor="@color/white"
+        android:layout_marginTop="100dp"
+        android:layout_below="@+id/btnhowtoplay"/>
+
+    <TextView
+        android:id="@+id/textUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewSharedPreferences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="TextView"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/textUserID"/>
+
+
+</RelativeLayout>

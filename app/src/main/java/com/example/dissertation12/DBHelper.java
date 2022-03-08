@@ -64,6 +64,7 @@ public class DBHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase MyDB, int i, int i1)
     {
+        //Drops tables when new version of database is created
         MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_PUZZLES);
         MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_REGION);
 

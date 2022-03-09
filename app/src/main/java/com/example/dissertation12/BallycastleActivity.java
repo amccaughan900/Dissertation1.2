@@ -30,9 +30,12 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 2: A colour and a mythic being, simple right?",
             "Puzzle 3: This bar will fill the spot after some dinner",
             "Puzzle 4: Bakers are expected to do this.",
-            "Puzzle 3: This bar will fill the spot after some dinner",
-            "Puzzle 3: This bar will fill the spot after some dinner",
-            "Puzzle 3: This bar will fill the spot after some dinner"
+            "Puzzle 5: A colour of the rainbow",
+            "Puzzle 6: Two word answer: 1st - _ & pepper, 2nd - a building used to live in.",
+            "Puzzle 7: A walkway alongside the seafront",
+            "Puzzle 8: This bar's name is based on a precious gem usually given in an engagement",
+            "Puzzle 9: DIY that is in a gorgeous state",
+            "Puzzle 10: Owning something together and a famous country-pop singer"
             };
 
     int currentItem;
@@ -68,9 +71,9 @@ public class BallycastleActivity extends AppCompatActivity
 
         int spUserID = sharedPreferences.getInt("id", 0);
 
-        userScore = MyDB.getUserScore(spUserID);
+        userScore = MyDB.getUserBallycastleScore(spUserID);
         String strScore = String.valueOf(userScore);
-        scoreCounter.setText("Score: " + strScore + "/6");
+        scoreCounter.setText("Score: " + strScore + "/10");
 
         spinner_ballycastle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -118,9 +121,9 @@ public class BallycastleActivity extends AppCompatActivity
                             {
                                 Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
 
-                                userScore = MyDB.getUserScore(spUserID);
+                                userScore = MyDB.getUserBallycastleScore(spUserID);
                                 String strScore = String.valueOf(userScore);
-                                scoreCounter.setText("Score: " + strScore + "/6");
+                                scoreCounter.setText("Score: " + strScore + "/10");
                             }
                             else
                             {

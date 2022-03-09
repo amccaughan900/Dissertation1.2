@@ -31,21 +31,12 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/selectSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/textviewBallycastle"
-        android:text="Please select a puzzle to solve"
-        android:textSize="20sp" />
-
     <Spinner
         android:id="@+id/spinner_ballycastle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/selectSpinner"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@+id/textviewBallycastle"
+        android:layout_marginTop="30dp" />
 
     <TextView
         android:id="@+id/fullPuzzle"
@@ -62,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fullPuzzle"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="Please answer this puzzle below"
         android:textColor="#F44336"
         android:textSize="20sp"
@@ -73,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/answerPuzzle"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:hint="Enter your answer here"
         android:textAlignment="viewStart" />
 
@@ -83,6 +74,6 @@
         android:layout_height="wrap_content"
         android:text="Solve puzzle"
         android:textColor="@color/white"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/answerBox"/>
 </RelativeLayout>

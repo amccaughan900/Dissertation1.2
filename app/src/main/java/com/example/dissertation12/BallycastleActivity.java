@@ -21,17 +21,22 @@ public class BallycastleActivity extends AppCompatActivity
 
     //Names of spinners widgets
     Spinner spinner_ballycastle;
-    TextView textview_puzzleSelected;
+    TextView textview_puzzleSelected, scoreCounter;
     EditText edittext_answer;
     Button btn_answerPuzzle;
 
     //Arrays for spinners to adapt
     String[] ballycastlePuzzles = new String[]{ "Puzzle 1: A shining form of potato?",
             "Puzzle 2: A colour and a mythic being, simple right?",
+            "Puzzle 3: This bar will fill the spot after some dinner",
+            "Puzzle 4: Bakers are expected to do this.",
+            "Puzzle 3: This bar will fill the spot after some dinner",
+            "Puzzle 3: This bar will fill the spot after some dinner",
             "Puzzle 3: This bar will fill the spot after some dinner"
             };
 
     int currentItem;
+    int userScore;
 
     //ArrayAdapters to attach the arrays above to
     ArrayAdapter ballycastleAdapter;
@@ -47,6 +52,7 @@ public class BallycastleActivity extends AppCompatActivity
         spinner_ballycastle = findViewById(R.id.spinner_ballycastle);
 
         textview_puzzleSelected = findViewById(R.id.fullPuzzle);
+        scoreCounter = findViewById(R.id.textviewScore);
         edittext_answer = (EditText) findViewById(R.id.answerBox);
 
         btn_answerPuzzle = (Button) findViewById(R.id.btnAnswer);
@@ -61,6 +67,10 @@ public class BallycastleActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int spUserID = sharedPreferences.getInt("id", 0);
+
+        userScore = MyDB.getUserScore(spUserID);
+        String strScore = String.valueOf(userScore);
+        scoreCounter.setText("Score: " + strScore + "/6");
 
         spinner_ballycastle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -107,6 +117,10 @@ public class BallycastleActivity extends AppCompatActivity
                             if (correctAnswer == true)
                             {
                                 Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
+
+                                userScore = MyDB.getUserScore(spUserID);
+                                String strScore = String.valueOf(userScore);
+                                scoreCounter.setText("Score: " + strScore + "/6");
                             }
                             else
                             {

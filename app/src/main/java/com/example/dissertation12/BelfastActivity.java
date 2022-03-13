@@ -29,6 +29,7 @@ public class BelfastActivity extends AppCompatActivity
             "Puzzle 3: An opaque, all-black gemstone."
             };
 
+    int currentRegionID = 2;
     int currentItem;
     int userScore;
 
@@ -73,7 +74,7 @@ public class BelfastActivity extends AppCompatActivity
             {
                 String itemPuzzle = spinner_belfast.getSelectedItem().toString();
                 textview_puzzleSelected.setText(itemPuzzle);
-                currentItem = i + 11;
+                currentItem = i;
             }
 
             @Override
@@ -99,15 +100,16 @@ public class BelfastActivity extends AppCompatActivity
                 }
                 else
                 {
-                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, currentItem);
+                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, belfastPuzzles[currentItem], currentRegionID);
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(currentItem, userAnswer);
+                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(belfastPuzzles[currentItem], userAnswer);
 
                         if (checkAnswer == true)
                         {
-                            Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, currentItem);
+                            int puzzleID = MyDB.getPuzzleID(belfastPuzzles[currentItem]);
+                            Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, puzzleID);
                             if (correctAnswer == true)
                             {
                                 Toast.makeText(BelfastActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();

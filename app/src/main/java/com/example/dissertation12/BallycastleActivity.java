@@ -35,9 +35,10 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 7: A walkway alongside the seafront",
             "Puzzle 8: This bar's name is based on a precious gem usually given in an engagement",
             "Puzzle 9: DIY that is in a gorgeous state",
-            "Puzzle 10: Owning something together and a famous country-pop singer"
+            "Puzzle 10: Owning something together and a famous female country-pop singer"
             };
 
+    int currentRegionID = 1;
     int currentItem;
     int userScore;
 
@@ -82,7 +83,7 @@ public class BallycastleActivity extends AppCompatActivity
             {
                 String itemPuzzle = spinner_ballycastle.getSelectedItem().toString();
                 textview_puzzleSelected.setText(itemPuzzle);
-                currentItem = i + 1;
+                currentItem = i;
             }
 
             @Override
@@ -108,15 +109,17 @@ public class BallycastleActivity extends AppCompatActivity
                 }
                 else
                 {
-                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, currentItem);
+                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, ballycastlePuzzles[currentItem], currentRegionID);
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(currentItem, userAnswer);
+                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(ballycastlePuzzles[currentItem], userAnswer);
 
                         if (checkAnswer == true)
                         {
-                            Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, currentItem);
+                            int puzzleID = MyDB.getPuzzleID(ballycastlePuzzles[currentItem]);
+                            Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, puzzleID);
+
                             if (correctAnswer == true)
                             {
                                 Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();

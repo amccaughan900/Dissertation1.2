@@ -31,7 +31,9 @@ public class BelfastActivity extends AppCompatActivity
 
     int currentRegionID = 2;
     int currentItem;
+
     int userScore;
+    int totalBelfastScore;
 
     //ArrayAdapters to attach the arrays above to
     ArrayAdapter belfastAdapter;
@@ -63,9 +65,11 @@ public class BelfastActivity extends AppCompatActivity
 
         int spUserID = sharedPreferences.getInt("id", 0);
 
-        userScore = MyDB.getUserBelfastScore(spUserID);
-        String strScore = String.valueOf(userScore);
-        scoreCounter.setText("Score: " + strScore + "/3");
+        userScore = MyDB.getUserScore(spUserID, currentRegionID);
+        String strUserScore = String.valueOf(userScore);
+        totalBelfastScore = MyDB.getTotalScore(currentRegionID);
+        String strTotalScore = String.valueOf(totalBelfastScore);
+        scoreCounter.setText("Score: " + strUserScore + "/" + strTotalScore);
 
         spinner_belfast.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -104,7 +108,7 @@ public class BelfastActivity extends AppCompatActivity
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(belfastPuzzles[currentItem], userAnswer);
+                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(belfastPuzzles[currentItem], userAnswer);
 
                         if (checkAnswer == true)
                         {
@@ -113,7 +117,7 @@ public class BelfastActivity extends AppCompatActivity
                             if (correctAnswer == true)
                             {
                                 Toast.makeText(BelfastActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
-                                userScore = MyDB.getUserBelfastScore(spUserID);
+                                userScore = MyDB.getUserScore(spUserID, currentRegionID);
                                 String strScore = String.valueOf(userScore);
                                 scoreCounter.setText("Score: " + strScore + "/3");
                             }

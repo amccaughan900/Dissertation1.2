@@ -79,25 +79,8 @@ public class DBHelper extends SQLiteOpenHelper
         onCreate(MyDB);
     }
 
-    //Inserts user information into the user table.
-    public Boolean insertData(String username, String password)
-    {
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_COL_2, username);
-        contentValues.put(USER_COL_3, password);
 
-        long result = MyDB.insert(TABLE_USER, null, contentValues);
 
-        if (result == -1)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
 
     public Boolean checkusername(String username)
     {
@@ -141,6 +124,28 @@ public class DBHelper extends SQLiteOpenHelper
         }
     }
 
+    //Inserts user information into the user table.
+    public Boolean insertData(String username, String password)
+    {
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_COL_2, username);
+        contentValues.put(USER_COL_3, password);
+
+        long result = MyDB.insert(TABLE_USER, null, contentValues);
+
+        if (result == -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+
+
     public int getUserID(String username)
     {
         int userID = 0;
@@ -162,118 +167,6 @@ public class DBHelper extends SQLiteOpenHelper
         MyDB.close();
         cursor.close();
         return userID;
-    }
-
-    public int getUserBallycastleScore(int userID)
-    {
-        int userScore = 0;
-
-        //Query to count from table where emotion = its string
-        String countQuery = "SELECT COUNT (*) FROM " + TABLE_SOLVED +  " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_4 + " = 1" + " AND " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_4 + " = 1";
-//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
-
-        //Cursor reads database with countQuery
-        Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
-
-        //If there are records in the count
-        if (cursor.getCount() > -1)
-        {
-            //Moves the cursor to the first row and use valenceTotal to hold the amount of rows
-            cursor.moveToFirst();
-            userScore = cursor.getInt(0);
-        }
-        //Closes cursor and method returns count amount
-        cursor.close();
-
-        return userScore;
-    }
-
-    public int getUserBelfastScore(int userID)
-    {
-        int userScore = 0;
-
-        //Query to count from table where emotion = its string
-        String countQuery = "SELECT COUNT (*) FROM " + TABLE_SOLVED +  " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_4 + " = 1" + " AND " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_4 + " = 2";
-//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
-
-        //Cursor reads database with countQuery
-        Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
-
-        //If there are records in the count
-        if (cursor.getCount() > -1)
-        {
-            //Moves the cursor to the first row and use valenceTotal to hold the amount of rows
-            cursor.moveToFirst();
-            userScore = cursor.getInt(0);
-        }
-        //Closes cursor and method returns count amount
-        cursor.close();
-
-        return userScore;
-    }
-
-//    FROM " + TABLE_SOLVED +  " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE "
-//    public Boolean checkPuzzleSolved(int userID, int puzzleID)
-//    {
-//        SQLiteDatabase MyDB = this.getReadableDatabase();
-//
-//        String idQuery = "SELECT " + SOLVED_COL_1 +  " FROM " + TABLE_SOLVED  + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + SOLVED_COL_3 + " ='" + puzzleID + "'" + " AND " + SOLVED_COL_4 + " = 1";
-//        Cursor cursor = MyDB.rawQuery(idQuery, null);
-//
-//        int count = cursor.getCount();
-//        MyDB.close();
-//        cursor.close();
-//
-//        if (count > 0)
-//        {
-//            return true;
-//        }
-//        else
-//        {
-//            return false;
-//        }
-//    }
-
-    public Boolean checkPuzzleSolved(int userID, String puzzleClue, int regionID)
-    {
-        SQLiteDatabase MyDB = this.getReadableDatabase();
-
-        String idQuery = "SELECT " + SOLVED_COL_1 +  " FROM " + TABLE_SOLVED  + " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + SOLVED_COL_4 + " ='" + regionID + "'";
-        Cursor cursor = MyDB.rawQuery(idQuery, null);
-
-        int count = cursor.getCount();
-        MyDB.close();
-        cursor.close();
-
-        if (count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public Boolean checkPuzzleAnswer(String puzzleClue, String userAnswer)
-    {
-        SQLiteDatabase MyDB = this.getReadableDatabase();
-
-        String answerQuery = "SELECT " + PUZZLE_COL_1 +  " FROM " + TABLE_PUZZLES  + " WHERE "  + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + PUZZLE_COL_3 + " LIKE '%" + userAnswer + "%'";
-        Cursor cursor = MyDB.rawQuery(answerQuery, null);
-
-        int count = cursor.getCount();
-        MyDB.close();
-        cursor.close();
-
-        if (count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     //Add region id to sql statement as well
@@ -299,6 +192,100 @@ public class DBHelper extends SQLiteOpenHelper
         cursor.close();
 
         return puzzleID;
+    }
+
+
+
+    public int getUserScore(int userID, int regionID)
+    {
+        int userScore = 0;
+
+        //Query to count from table where emotion = its string
+        String countQuery = "SELECT COUNT (*) FROM " + TABLE_SOLVED +  " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_4 + " = 1" + " AND " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_4 + " ='" + regionID + "'";
+//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
+
+        //Cursor reads database with countQuery
+        Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
+
+        //If there are records in the count
+        if (cursor.getCount() > -1)
+        {
+            //Moves the cursor to the first row and use valenceTotal to hold the amount of rows
+            cursor.moveToFirst();
+            userScore = cursor.getInt(0);
+        }
+        //Closes cursor and method returns count amount
+        cursor.close();
+
+        return userScore;
+    }
+
+    public int getTotalScore(int regionID)
+    {
+        int totalScore = 0;
+
+        //Query to count from table where emotion = its string
+        String countQuery = "SELECT COUNT (*) FROM " + TABLE_PUZZLES + " WHERE " + PUZZLE_COL_4 + " ='" + regionID + "'";
+//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
+
+        //Cursor reads database with countQuery
+        Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
+
+        //If there are records in the count
+        if (cursor.getCount() > -1)
+        {
+            //Moves the cursor to the first row and use valenceTotal to hold the amount of rows
+            cursor.moveToFirst();
+            totalScore = cursor.getInt(0);
+        }
+        //Closes cursor and method returns count amount
+        cursor.close();
+
+        return totalScore;
+    }
+
+
+
+    public Boolean checkPuzzleSolved(int userID, String puzzleClue, int regionID)
+    {
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+
+        String idQuery = "SELECT " + SOLVED_COL_1 +  " FROM " + TABLE_SOLVED  + " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + SOLVED_COL_4 + " ='" + regionID + "'";
+        Cursor cursor = MyDB.rawQuery(idQuery, null);
+
+        int count = cursor.getCount();
+        MyDB.close();
+        cursor.close();
+
+        if (count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Boolean checkUserVSPuzzleAnswer(String puzzleClue, String userAnswer)
+    {
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+
+        String answerQuery = "SELECT " + PUZZLE_COL_1 +  " FROM " + TABLE_PUZZLES  + " WHERE "  + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + PUZZLE_COL_3 + " LIKE '%" + userAnswer + "%'";
+        Cursor cursor = MyDB.rawQuery(answerQuery, null);
+
+        int count = cursor.getCount();
+        MyDB.close();
+        cursor.close();
+
+        if (count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public Boolean insertSolvedAnswer(int userID, int puzzleID)

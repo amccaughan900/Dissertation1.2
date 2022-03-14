@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,8 +41,9 @@ public class BallycastleActivity extends AppCompatActivity
 
     int currentRegionID = 1;
     int currentItem;
-    int userScore;
 
+    int userScore;
+    int totalBallycastleScore;
     //ArrayAdapters to attach the arrays above to
     ArrayAdapter ballycastleAdapter;
 
@@ -63,7 +65,7 @@ public class BallycastleActivity extends AppCompatActivity
 
         MyDB = new DBHelper(BallycastleActivity.this);
 
-        //Makes the drop down list for valence level by setting an adapter onto the spinner containing vItems array
+//        Makes the drop down list for valence level by setting an adapter onto the spinner containing vItems array
         ballycastleAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ballycastlePuzzles);
         ballycastleAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         spinner_ballycastle.setAdapter(ballycastleAdapter);
@@ -72,28 +74,37 @@ public class BallycastleActivity extends AppCompatActivity
 
         int spUserID = sharedPreferences.getInt("id", 0);
 
-        userScore = MyDB.getUserBallycastleScore(spUserID);
-        String strScore = String.valueOf(userScore);
-        scoreCounter.setText("Score: " + strScore + "/10");
+        userScore = MyDB.getUserScore(spUserID, currentRegionID);
+        String strUserScore = String.valueOf(userScore);
+        totalBallycastleScore = MyDB.getTotalScore(currentRegionID);
+        String strTotalScore = String.valueOf(totalBallycastleScore);
+        scoreCounter.setText("Score: " + strUserScore + "/" + strTotalScore);
 
-        spinner_ballycastle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            spinner_ballycastle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {
-                String itemPuzzle = spinner_ballycastle.getSelectedItem().toString();
-                textview_puzzleSelected.setText(itemPuzzle);
-                currentItem = i;
-            }
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+                {
+                    String itemPuzzle = spinner_ballycastle.getSelectedItem().toString();
+                    textview_puzzleSelected.setText(itemPuzzle);
+                    currentItem = i;
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
+                    Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, ballycastlePuzzles[currentItem], currentRegionID);
 
-            }
-        });
+                    if (ifPuzzleSolved == true)
+                    {
+                        textview_puzzleSelected.setText("PUZZLE COMPLETED");
+                        ballycastlePuzzles[currentItem] = "PUZZLE COMPLETED";
+                        spinner_ballycastle.setAdapter(ballycastleAdapter);
+                    }
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView)
+                {
 
+                }
+            });
 
         btn_answerPuzzle.setOnClickListener(new View.OnClickListener()
         {
@@ -113,7 +124,7 @@ public class BallycastleActivity extends AppCompatActivity
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkPuzzleAnswer(ballycastlePuzzles[currentItem], userAnswer);
+                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(ballycastlePuzzles[currentItem], userAnswer);
 
                         if (checkAnswer == true)
                         {
@@ -124,7 +135,7 @@ public class BallycastleActivity extends AppCompatActivity
                             {
                                 Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
 
-                                userScore = MyDB.getUserBallycastleScore(spUserID);
+                                userScore = MyDB.getUserScore(spUserID, currentRegionID);
                                 String strScore = String.valueOf(userScore);
                                 scoreCounter.setText("Score: " + strScore + "/10");
                             }

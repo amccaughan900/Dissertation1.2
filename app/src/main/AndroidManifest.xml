@@ -10,10 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dissertation12">
         <activity
-            android:name=".TestActivity"
+            android:name=".BelfastSolvedActivity"
             android:exported="false" />
         <activity
-            android:name=".puzzlesSolved"
+            android:name=".SelectSolvedLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BallycastleSolvedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TestActivity"
             android:exported="false" />
         <activity
             android:name=".LocationActivity"

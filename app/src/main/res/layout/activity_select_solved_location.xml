@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".SelectSolvedLocationActivity">
+
+    <Button
+        android:id="@+id/btnToHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home Page"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/btnToBallycastleSolved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnToHome"
+        android:layout_marginTop="50dp"
+        android:text="Ballycastle's Solved Puzzles"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnToBelfastSolved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belfast's Solved Puzzles"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/btnToBallycastleSolved"/>
+
+</RelativeLayout>

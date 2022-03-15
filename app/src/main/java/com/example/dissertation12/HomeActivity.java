@@ -31,23 +31,12 @@ public class HomeActivity extends AppCompatActivity
         sp = (TextView) findViewById(R.id.textViewSharedPreferences);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // int userid = 1;
-        // editor.putInt("id", userid);
-        // editor.putString("Username", "Conor");
-        // editor.apply();
 
         String spUsername = sharedPreferences.getString("Username", "No Username Found");
         int spUserID = sharedPreferences.getInt("id", 0);
         String txtSpUserID = String.valueOf(spUserID);
         userID.setText(txtSpUserID);
         sp.setText(spUsername);
-//        Bundle extras = getIntent().getExtras();
-//        if(extras!=null)
-//        {
-//            userID.setText("User ID is "+extras.getString("UserName"));
-//        }
 
         solvePuzzles.setOnClickListener(new View.OnClickListener()
         {
@@ -64,7 +53,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), puzzlesSolved.class);
+                Intent intent = new Intent(getApplicationContext(), SelectSolvedLocationActivity.class);
                 startActivity(intent);
             }
         });

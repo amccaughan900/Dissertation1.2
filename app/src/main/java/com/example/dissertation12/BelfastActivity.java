@@ -130,6 +130,8 @@ public class BelfastActivity extends AppCompatActivity
                 String userAnswer = edittext_answer.getText().toString();
                 String lowerCaseUserAnswer = userAnswer.toLowerCase();
 
+                int puzzleNumber = currentItem + 1;
+
                 if(lowerCaseUserAnswer.equals(""))
                 {
                     Toast.makeText(BelfastActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
@@ -138,7 +140,7 @@ public class BelfastActivity extends AppCompatActivity
                 {
                     Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, belfastPuzzles[currentItem], currentRegionID);
 
-                    if(checkPuzzleSolved==false)
+                    if(checkPuzzleSolved==false && !belfastPuzzles[currentItem].equals("PUZZLE " + puzzleNumber + ": COMPLETED"))
                     {
                         Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(belfastPuzzles[currentItem], lowerCaseUserAnswer);
 
@@ -155,7 +157,6 @@ public class BelfastActivity extends AppCompatActivity
                                 String strScore = String.valueOf(userScore);
                                 scoreCounter.setText("Score: " + strScore + "/" + strTotalScore);
 
-                                int puzzleNumber = currentItem + 1;
                                 belfastPuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
 
                                 String itemPuzzle = spinner_belfast.getSelectedItem().toString();

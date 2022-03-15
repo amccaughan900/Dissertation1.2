@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper
 {
     private static final String DBNAME = "Login.db";
@@ -78,8 +81,6 @@ public class DBHelper extends SQLiteOpenHelper
         MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_SOLVED);
         onCreate(MyDB);
     }
-
-
 
 
     public Boolean checkusername(String username)
@@ -250,7 +251,7 @@ public class DBHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase MyDB = this.getReadableDatabase();
 
-        String idQuery = "SELECT " + SOLVED_COL_1 +  " FROM " + TABLE_SOLVED  + " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + SOLVED_COL_4 + " ='" + regionID + "'";
+        String idQuery = "SELECT " + SOLVED_COL_1 +  " FROM " + TABLE_SOLVED  + " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + SOLVED_COL_4 + "= 1" + " AND " + PUZZLE_COL_4 + " ='" + regionID + "'";
         Cursor cursor = MyDB.rawQuery(idQuery, null);
 
         int count = cursor.getCount();
@@ -306,5 +307,46 @@ public class DBHelper extends SQLiteOpenHelper
         {
             return true;
         }
+    }
+
+    public List<PuzzleModel> selectAllSolved(int userID, int region)
+    {
+        List<PuzzleModel> returnPuzzleSolved = new ArrayList<>();
+
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+
+        String queryDB = "SELECT * FROM " + TABLE_PUZZLES  + " INNER JOIN " + TABLE_SOLVED + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_4 + " ='" + region + "'" + " AND " + SOLVED_COL_4 + " = 1" + " ORDER BY " + PUZZLE_COL_1;
+
+        Cursor cursor = MyDB.rawQuery(queryDB, null);
+
+        //Populates the list with each record in database.
+        if (cursor.moveToFirst())
+        {
+            //Loops through the results and puts them into new objects to put into the list while cursor can move to next set.
+            do
+            {
+                String puzzleName = cursor.getString(1);
+                String puzzleAnswer = cursor.getString(2);
+
+                //EmotionModel constructor is called here to hold each value and pass into newEvent
+                PuzzleModel newEvent = new PuzzleModel(puzzleName, puzzleAnswer);
+                //Adds newEvent to returnList array
+                returnPuzzleSolved.add(newEvent);
+            }
+
+            while(cursor.moveToNext());
+        }
+
+        else
+        {
+            //Error: do not add to the list
+        }
+
+        //Closes both database and cursor when finished.
+        cursor.close();
+        MyDB.close();
+
+        //return returnList from method
+        return returnPuzzleSolved;
     }
 }

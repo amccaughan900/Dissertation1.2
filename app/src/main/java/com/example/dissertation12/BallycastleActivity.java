@@ -137,6 +137,8 @@ public class BallycastleActivity extends AppCompatActivity
                 String userAnswer = edittext_answer.getText().toString();
                 String lowerCaseUserAnswer = userAnswer.toLowerCase();
 
+                int puzzleNumber = currentItem + 1;
+
                 if(lowerCaseUserAnswer.equals(""))
                 {
                     Toast.makeText(BallycastleActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
@@ -145,7 +147,7 @@ public class BallycastleActivity extends AppCompatActivity
                 {
                     Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, ballycastlePuzzles[currentItem], currentRegionID);
 
-                    if(checkPuzzleSolved==false)
+                    if(checkPuzzleSolved==false && !ballycastlePuzzles[currentItem].equals("PUZZLE " + puzzleNumber + ": COMPLETED"))
                     {
                         Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(ballycastlePuzzles[currentItem], lowerCaseUserAnswer);
 
@@ -162,7 +164,7 @@ public class BallycastleActivity extends AppCompatActivity
                                 String strScore = String.valueOf(userScore);
                                 scoreCounter.setText("Score: " + strScore + "/" + strTotalScore);
 
-                                int puzzleNumber = currentItem + 1;
+
                                 ballycastlePuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
 
                                 String itemPuzzle = spinner_ballycastle.getSelectedItem().toString();

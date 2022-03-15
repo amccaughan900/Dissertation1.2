@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper
 
     public DBHelper(Context context)
     {
-        super(context, "Login.db", null, 22);
+        super(context, "Login.db", null, 23);
     }
 
     @Override
@@ -60,12 +60,12 @@ public class DBHelper extends SQLiteOpenHelper
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 5: A colour of the rainbow','Indigo', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 6: Two word answer: 1st - _ & pepper, 2nd - a building used to live in.','Salt House', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 7: A walkway alongside the seafront','Promenade', 1)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 8: This bar''s name is based on a precious gem usually given in an engagement','Diamond Bar', 1)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 8: The name of this bar is based on a precious gem usually given in an engagement.','Diamond Bar', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 9: DIY that is in a gorgeous state','Homemade Beautiful', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 10: Owning something together and a famous female country-pop singer','Our Dollys', 1)");
 
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 1: This peeling vegetable is not in a good condition.','Dirty Onion', 2)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 2: This pub''s name suggests it''s holding some sort of score.', 'The Points', 2)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 2: This pub has a name that suggests it is holding some sort of score.', 'The Points', 2)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_ANSWER, REGION_ID) VALUES ('Puzzle 3: An opaque, all-black gemstone.', 'The Onyx', 2)");
     }
 
@@ -271,7 +271,7 @@ public class DBHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase MyDB = this.getReadableDatabase();
 
-        String answerQuery = "SELECT " + PUZZLE_COL_1 +  " FROM " + TABLE_PUZZLES  + " WHERE "  + PUZZLE_COL_2 + " ='" + puzzleClue + "'" + " AND " + PUZZLE_COL_3 + " LIKE '%" + userAnswer + "%'";
+        String answerQuery = "SELECT " + PUZZLE_COL_1 +  " FROM " + TABLE_PUZZLES  + " WHERE "  + PUZZLE_COL_2  + " ='" + puzzleClue + "'" + " AND " + "lower(" + PUZZLE_COL_3 + ")" + "='" + userAnswer + "'";
         Cursor cursor = MyDB.rawQuery(answerQuery, null);
 
         int count = cursor.getCount();

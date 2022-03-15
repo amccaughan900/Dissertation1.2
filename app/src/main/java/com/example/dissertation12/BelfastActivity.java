@@ -25,7 +25,7 @@ public class BelfastActivity extends AppCompatActivity
     //Arrays for spinners to adapt
     String[] belfastPuzzles = new String[]
             { "Puzzle 1: This peeling vegetable is not in a good condition.",
-            "Puzzle 2: This pub's name suggests it's holding some sort of score.",
+            "Puzzle 2: This pub has a name that suggests it is holding some sort of score.",
             "Puzzle 3: An opaque, all-black gemstone."
             };
 
@@ -71,6 +71,23 @@ public class BelfastActivity extends AppCompatActivity
         String strTotalScore = String.valueOf(totalBelfastScore);
         scoreCounter.setText("Score: " + strUserScore + "/" + strTotalScore);
 
+        for (int i = 1; i<totalBelfastScore; i++)
+        {
+            Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, belfastPuzzles[i], currentRegionID);
+
+            int puzzleNumber = i + 1;
+            if (ifPuzzleSolved == true)
+            {
+                belfastPuzzles[i] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+                spinner_belfast.setAdapter(belfastAdapter);
+            }
+            else
+            {
+                //do nothing
+            }
+
+        }
+
         spinner_belfast.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -79,6 +96,20 @@ public class BelfastActivity extends AppCompatActivity
                 String itemPuzzle = spinner_belfast.getSelectedItem().toString();
                 textview_puzzleSelected.setText(itemPuzzle);
                 currentItem = i;
+
+                int puzzleNumber = currentItem + 1;
+
+                Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, belfastPuzzles[currentItem], currentRegionID);
+
+                if (ifPuzzleSolved == true)
+                {
+                    belfastPuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+                    spinner_belfast.setAdapter(belfastAdapter);
+                }
+                else
+                {
+                    //Do nothing
+                }
             }
 
             @Override
@@ -97,8 +128,9 @@ public class BelfastActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 String userAnswer = edittext_answer.getText().toString();
+                String lowerCaseUserAnswer = userAnswer.toLowerCase();
 
-                if(userAnswer.equals(""))
+                if(lowerCaseUserAnswer.equals(""))
                 {
                     Toast.makeText(BelfastActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
                 }
@@ -108,18 +140,29 @@ public class BelfastActivity extends AppCompatActivity
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(belfastPuzzles[currentItem], userAnswer);
+                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(belfastPuzzles[currentItem], lowerCaseUserAnswer);
 
                         if (checkAnswer == true)
                         {
                             int puzzleID = MyDB.getPuzzleID(belfastPuzzles[currentItem]);
                             Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, puzzleID);
+
                             if (correctAnswer == true)
                             {
-                                Toast.makeText(BelfastActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BelfastActivity.this, "Correct, the answer is " + lowerCaseUserAnswer, Toast.LENGTH_SHORT).show();
+
                                 userScore = MyDB.getUserScore(spUserID, currentRegionID);
                                 String strScore = String.valueOf(userScore);
-                                scoreCounter.setText("Score: " + strScore + "/3");
+                                scoreCounter.setText("Score: " + strScore + "/" + strTotalScore);
+
+                                int puzzleNumber = currentItem + 1;
+                                belfastPuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+
+                                String itemPuzzle = spinner_belfast.getSelectedItem().toString();
+                                textview_puzzleSelected.setText(itemPuzzle);
+
+                                spinner_belfast.setAdapter(belfastAdapter);
+                                spinner_belfast.setSelection(currentItem);
                             }
                             else
                             {

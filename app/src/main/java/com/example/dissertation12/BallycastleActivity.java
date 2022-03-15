@@ -34,7 +34,7 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 5: A colour of the rainbow",
             "Puzzle 6: Two word answer: 1st - _ & pepper, 2nd - a building used to live in.",
             "Puzzle 7: A walkway alongside the seafront",
-            "Puzzle 8: This bar's name is based on a precious gem usually given in an engagement",
+            "Puzzle 8: The name of this bar is based on a precious gem usually given in an engagement.",
             "Puzzle 9: DIY that is in a gorgeous state",
             "Puzzle 10: Owning something together and a famous female country-pop singer"
             };
@@ -80,6 +80,23 @@ public class BallycastleActivity extends AppCompatActivity
         String strTotalScore = String.valueOf(totalBallycastleScore);
         scoreCounter.setText("Score: " + strUserScore + "/" + strTotalScore);
 
+        for (int i = 1; i<totalBallycastleScore; i++)
+        {
+            Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, ballycastlePuzzles[i], currentRegionID);
+
+            int puzzleNumber = i + 1;
+            if (ifPuzzleSolved == true)
+            {
+                ballycastlePuzzles[i] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+                spinner_ballycastle.setAdapter(ballycastleAdapter);
+            }
+            else
+            {
+                //do nothing
+            }
+
+        }
+
             spinner_ballycastle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {
                 @Override
@@ -89,13 +106,18 @@ public class BallycastleActivity extends AppCompatActivity
                     textview_puzzleSelected.setText(itemPuzzle);
                     currentItem = i;
 
+                    int puzzleNumber = currentItem + 1;
+
                     Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, ballycastlePuzzles[currentItem], currentRegionID);
 
                     if (ifPuzzleSolved == true)
                     {
-                        textview_puzzleSelected.setText("PUZZLE COMPLETED");
-                        ballycastlePuzzles[currentItem] = "PUZZLE COMPLETED";
+                        ballycastlePuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
                         spinner_ballycastle.setAdapter(ballycastleAdapter);
+                    }
+                    else
+                    {
+                        //Do nothing
                     }
                 }
 
@@ -113,8 +135,9 @@ public class BallycastleActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 String userAnswer = edittext_answer.getText().toString();
+                String lowerCaseUserAnswer = userAnswer.toLowerCase();
 
-                if(userAnswer.equals(""))
+                if(lowerCaseUserAnswer.equals(""))
                 {
                     Toast.makeText(BallycastleActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
                 }
@@ -124,7 +147,7 @@ public class BallycastleActivity extends AppCompatActivity
 
                     if(checkPuzzleSolved==false)
                     {
-                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(ballycastlePuzzles[currentItem], userAnswer);
+                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(ballycastlePuzzles[currentItem], lowerCaseUserAnswer);
 
                         if (checkAnswer == true)
                         {
@@ -133,11 +156,20 @@ public class BallycastleActivity extends AppCompatActivity
 
                             if (correctAnswer == true)
                             {
-                                Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BallycastleActivity.this, "Correct, the answer is " + lowerCaseUserAnswer, Toast.LENGTH_SHORT).show();
 
                                 userScore = MyDB.getUserScore(spUserID, currentRegionID);
                                 String strScore = String.valueOf(userScore);
-                                scoreCounter.setText("Score: " + strScore + "/10");
+                                scoreCounter.setText("Score: " + strScore + "/" + strTotalScore);
+
+                                int puzzleNumber = currentItem + 1;
+                                ballycastlePuzzles[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+
+                                String itemPuzzle = spinner_ballycastle.getSelectedItem().toString();
+                                textview_puzzleSelected.setText(itemPuzzle);
+
+                                spinner_ballycastle.setAdapter(ballycastleAdapter);
+                                spinner_ballycastle.setSelection(currentItem);
                             }
                             else
                             {

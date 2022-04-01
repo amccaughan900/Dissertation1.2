@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity
                 {
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 }
-                else if (pass.length() < 6)
-                {
-                    Toast.makeText(MainActivity.this, "Must have at least 6 characters", Toast.LENGTH_SHORT).show();
-                }
+//                else if (pass.length() < 6)
+//                {
+//                    Toast.makeText(MainActivity.this, "Must have at least 6 characters", Toast.LENGTH_SHORT).show();
+//                }
                 else if (pass.equals(repass))
                 {
                     Boolean checkuser = MyDB.checkusername(user);

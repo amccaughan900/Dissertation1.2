@@ -7,17 +7,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class HomeActivity extends AppCompatActivity
+public class HomeActivity extends AppCompatActivity implements SensorEventListener
 {
 
     Button solvePuzzles, completePuzzles, howToPlay, logout;
-    TextView userID, sp;
+    TextView textViewStepCounter, textViewStepDetector;
+    private SensorManager sensorManager;
+    private Sensor mStepCounter;
+    private boolean isCounterSensorPresent;
+    int stepCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,10 +35,26 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        textViewStepCounter = findViewById(R.id.textViewStepCounter);
+
         solvePuzzles = (Button) findViewById(R.id.btnsolvepuzzles);
         completePuzzles = (Button) findViewById(R.id.btncompletedpuzzles);
         howToPlay = (Button) findViewById(R.id.btnhowtoplay);
         logout = (Button) findViewById(R.id.btnlogout);
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
+        {
+            mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            isCounterSensorPresent = true;
+        }
+        else
+        {
+            textViewStepCounter.setText("Walking sensor not found");
+            isCounterSensorPresent = false;
+        }
 
         solvePuzzles.setOnClickListener(new View.OnClickListener()
         {
@@ -94,5 +120,58 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent.sensor == mStepCounter)
+        {
+            stepCount = (int) sensorEvent.values[0];
+            //String steps = String.valueOf(event.values[0]);
+            textViewStepCounter.setText("Steps walked: " + String.valueOf(stepCount));
+            if (stepCount % 100 == 0)
+            {
+                AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
+                alertDialog.setTitle("Congratulations!");
+                alertDialog.setMessage("By walking " + stepCount + " steps, you have earned a hint coin");
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Continue",
+                        new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i)
+                            {
+                                dialog.dismiss();
+                            }
+                        });
+
+                alertDialog.show();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) !=null)
+        {
+            sensorManager.unregisterListener(this, mStepCounter);
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) !=null)
+        {
+            sensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 }

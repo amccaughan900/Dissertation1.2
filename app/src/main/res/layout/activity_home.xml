@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
+            <TextView
         android:id="@+id/textviewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,14 +25,17 @@
         android:textSize="30dp" />
 
             <TextView
-                android:id="@+id/textviewsteps"
-                android:layout_width="match_parent"
+                android:id="@+id/textViewStepCounter"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Steps made: "
-                android:textStyle="bold"
-                android:textSize="25dp"
+                android:layout_below="@+id/textviewTitle"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/textviewTitle"/>
+                android:text="Steps walked: "
+                android:textColor="@color/teal_700"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+
 
     <Button
         android:id="@+id/btnsolvepuzzles"
@@ -43,7 +46,7 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/purple_700"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/textviewsteps"/>
+        android:layout_below="@+id/textViewStepCounter"/>
 
     <Button
         android:id="@+id/btncompletedpuzzles"
@@ -67,16 +70,16 @@
         android:layout_marginTop="30dp"
         android:layout_below="@+id/btncompletedpuzzles"/>
 
-    <Button
-        android:id="@+id/btnlogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_700"
-        android:text="Log out"
-        android:textSize="20dp"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/btnhowtoplay"/>
+            <Button
+                android:id="@+id/btnlogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnhowtoplay"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="Log out"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
         </RelativeLayout>
 

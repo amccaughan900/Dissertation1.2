@@ -7,18 +7,37 @@
     android:padding="10dp"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="User Name"
-        android:layout_marginTop="50dp"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register Page"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter username here"
+            android:layout_marginTop="50dp"
+                android:layout_below="@+id/textviewTitle"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="Enter password here"
         android:inputType="textPassword"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/username"/>
@@ -27,7 +46,7 @@
         android:id="@+id/repassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Retype Password"
+        android:hint="Retype Password here"
         android:inputType="textPassword"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/password"/>
@@ -37,15 +56,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
-        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/purple_700"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/repassword"/>
 
     <Button
         android:id="@+id/btnsignin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_700"
         android:text="Existing user! Go to Sign in page"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/btnsignup"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

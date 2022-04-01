@@ -7,57 +7,79 @@
     android:padding="10dp"
     tools:context=".HomeActivity">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+        android:id="@+id/textviewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home Page"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/textviewsteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Steps made: "
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/textviewTitle"/>
+
     <Button
         android:id="@+id/btnsolvepuzzles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Solve puzzles"
+        android:textSize="20dp"
         android:textColor="@color/white"
-        android:layout_marginTop="100dp" />
+        android:backgroundTint="@color/purple_700"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textviewsteps"/>
 
     <Button
         android:id="@+id/btncompletedpuzzles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnsolvepuzzles"
-        android:layout_marginTop="100dp"
-        android:text="Completed Puzzles"
+        android:backgroundTint="@color/purple_700"
+        android:layout_marginTop="30dp"
+        android:textSize="20dp"
+        android:text="My Completed Puzzles"
         android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btnhowtoplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="How to play"
+        android:text="How to play (Read at least once)"
+        android:backgroundTint="@color/purple_700"
         android:textColor="@color/white"
-        android:layout_marginTop="100dp"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/btncompletedpuzzles"/>
 
     <Button
         android:id="@+id/btnlogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_700"
         android:text="Log out"
+        android:textSize="20dp"
         android:textColor="@color/white"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/btnhowtoplay"/>
 
-    <TextView
-        android:id="@+id/textUserID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginTop="20dp"/>
+        </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textViewSharedPreferences"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:text="TextView"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/textUserID"/>
-
+    </ScrollView>
 
 </RelativeLayout>

@@ -7,73 +7,122 @@
     android:padding="10dp"
     tools:context=".BelfastActivity">
 
-    <TextView
-        android:id="@+id/textviewBelfast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Belfast's Puzzles"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/textviewScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toEndOf="@+id/textviewBelfast"
-        android:text="Score:"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Spinner
-        android:id="@+id/spinner_belfast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textviewBelfast"
-        android:layout_marginTop="30dp" />
+            <Button
+                android:id="@+id/btnGoBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="Back to previous page"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/fullPuzzle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner_belfast"
-        android:layout_marginTop="30dp"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textviewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="Belfast's Puzzles"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_below="@+id/btnGoBack"/>
 
-    <TextView
-        android:id="@+id/answerPuzzle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fullPuzzle"
-        android:layout_marginTop="30dp"
-        android:text="Please answer this puzzle below"
-        android:textColor="#F44336"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textviewScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textviewTitle"
+                android:text="Score:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                />
 
-    <EditText
-        android:id="@+id/answerBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/answerPuzzle"
-        android:layout_marginTop="30dp"
-        android:hint="Enter your answer here"
-        android:textAlignment="viewStart" />
+            <TextView
+                android:id="@+id/hintCoins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textviewTitle"
+                android:layout_marginTop="20dp"
+                android:textColor="#F98F00"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                android:text="Hint coins:"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/btnAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Solve puzzle"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/answerBox"/>
+            <Spinner
+                android:id="@+id/spinnerPuzzle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hintCoins"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:id="@+id/fullPuzzle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinnerPuzzle"
+                android:layout_marginTop="20dp"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/hintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fullPuzzle"
+                android:layout_marginTop="20dp"
+                android:textColor="#F98F00"
+                android:text="Locked hint, buy hint to unlock"
+                android:textStyle="bold"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/answerBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hintText"
+                android:layout_marginTop="30dp"
+                android:hint="Enter your answer here"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/btnAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/answerBox"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@android:color/holo_green_dark"
+                android:text="Solve puzzle"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btnHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/answerBox"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="#F98F00"
+                android:text="Hint"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

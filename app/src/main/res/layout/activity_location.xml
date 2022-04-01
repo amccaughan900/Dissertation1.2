@@ -7,30 +7,58 @@
     android:padding="10dp"
     tools:context=".LocationActivity">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textviewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Regions to solve"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
     <Button
         android:id="@+id/btnhome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back to home"
+        android:text="Return to home"
+        android:backgroundTint="@color/purple_700"
+        android:textSize="25dp"
         android:textColor="@color/white"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/textviewTitle" />
 
     <Button
         android:id="@+id/btnballycastle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnhome"
-        android:layout_marginTop="100dp"
         android:text="Ballycastle's puzzles"
-        android:textColor="@color/white" />
+        android:backgroundTint="@color/purple_700"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/btnhome" />
 
     <Button
         android:id="@+id/btnbelfast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Belfast's puzzles"
+        android:backgroundTint="@color/purple_700"
+        android:text="Belfast's Puzzles"
+        android:textSize="25dp"
         android:textColor="@color/white"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_below="@+id/btnballycastle"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

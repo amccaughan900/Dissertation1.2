@@ -7,27 +7,61 @@
     android:padding="10dp"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/username1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="User Name"
-        android:layout_marginTop="50dp"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <EditText
-        android:id="@+id/password1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/username1"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnsignin1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/password1"/>
+
+            <TextView
+                android:id="@+id/textviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login Page"
+                android:textAlignment="center"
+                android:textSize="30dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/username1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textviewTitle"
+                android:layout_marginTop="50dp"
+                android:hint="Enter username here" />
+
+            <EditText
+                android:id="@+id/password1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/username1"
+                android:layout_marginTop="50dp"
+                android:hint="Enter password here"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/btnsignin1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/password1"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="Sign in" />
+
+            <Button
+                android:id="@+id/btnsignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnsignin1"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="New user? Register here!" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 </RelativeLayout>

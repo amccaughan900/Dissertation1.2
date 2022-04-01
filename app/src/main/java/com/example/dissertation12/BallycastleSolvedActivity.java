@@ -17,6 +17,8 @@ public class BallycastleSolvedActivity extends AppCompatActivity
 
     DBHelper MyDB;
 
+    Button btnGoHome;
+
     TextView scoreCounter;
 
     private ListView ballycastlePuzzleSolvedLV;
@@ -34,15 +36,27 @@ public class BallycastleSolvedActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ballycastle_solved);
 
-        scoreCounter = findViewById(R.id.ballycastleScore);
+        btnGoHome = findViewById(R.id.btnGoBack);
 
-        ballycastlePuzzleSolvedLV = findViewById(R.id.ballycastleSolvedRecordsLV);
+        scoreCounter = findViewById(R.id.score);
+
+        ballycastlePuzzleSolvedLV = findViewById(R.id.solvedRecordsLV);
 
         MyDB = new DBHelper(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         int spUserID = sharedPreferences.getInt("id", 0);
+
+        btnGoHome.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), SelectSolvedLocationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         userScore = MyDB.getUserScore(spUserID, currentRegionID);
         String strUserScore = String.valueOf(userScore);

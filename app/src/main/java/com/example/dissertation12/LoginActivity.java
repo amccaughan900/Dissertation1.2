@@ -2,6 +2,7 @@ package com.example.dissertation12;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,7 @@ public class LoginActivity extends AppCompatActivity
 {
 
     EditText username, password;
-    Button btnlogin;
+    Button btnlogin, btnsignup;
     DBHelper MyDB;
 
     @Override
@@ -29,6 +30,8 @@ public class LoginActivity extends AppCompatActivity
         username = (EditText) findViewById(R.id.username1);
         password = (EditText) findViewById(R.id.password1);
         btnlogin = (Button) findViewById(R.id.btnsignin1);
+        btnsignup = findViewById(R.id.btnsignup);
+
         MyDB = new DBHelper(this);
 
         btnlogin.setOnClickListener(new View.OnClickListener()
@@ -71,6 +74,16 @@ public class LoginActivity extends AppCompatActivity
 
                 }
 
+            }
+        });
+
+        btnsignup.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }

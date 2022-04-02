@@ -39,7 +39,21 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 8: The name of this bar is based on a precious gem usually given in an engagement.",
             "Puzzle 9: DIY that is in a gorgeous state",
             "Puzzle 10: Owning something together and a famous female country-pop singer",
-            "Puzzle 11: ususal award for being runners-up and an extremely steep incline made of rock"
+            "Puzzle 11: Ususal award for being runners-up and an extremely steep incline made of rock",
+            "Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight",
+            "Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety",
+            "Puzzle 14: Spice and friends",
+            "Puzzle 15: A tool used to cut metal wiring",
+            "Puzzle 16: Angels are usually depicted to have this above their head",
+            "Puzzle 17: It does not have a deck that the namesake would have us believe",
+            "Puzzle 18: Providing a helpful service",
+            "Puzzle 19: A metallic element in the periodic table, symbolised by pt.",
+            "Puzzle 20: Another word for coast and a winged animal",
+            "Puzzle 21: _ & pestle",
+            "Puzzle 22: This business shares the name of a magic nanny in a movie",
+            "Puzzle 23: Where would  most of the rackets be in the town",
+            "Puzzle 24: Any living creature found in the sea are considered _ life and a place ususally filled with tourists.",
+            "Puzzle 25: Playing by the rules and the section of body that contain the most variety of senses."
             };
 
     int currentRegionID = 1;
@@ -274,7 +288,7 @@ public class BallycastleActivity extends AppCompatActivity
 
                 else if(firstFourChars.equals("the "))
                 {
-                    Toast.makeText(BallycastleActivity.this, "First word can't be 'the_' Read how to play for more info.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BallycastleActivity.this, "Start of an answer can't be 'the '", Toast.LENGTH_SHORT).show();
                 }
 
                 else
@@ -301,11 +315,18 @@ public class BallycastleActivity extends AppCompatActivity
 
                                 String itemPuzzle = spinner_puzzles.getSelectedItem().toString();
                                 textview_puzzleSelected.setText(itemPuzzle);
+                                edittext_answer.setText("");
                                 //textviewHint.setText("Hint not required, puzzle already solved");
 
                                 spinner_puzzles.setAdapter(puzzleAdapter);
-                                spinner_puzzles.setSelection(currentItem);
-
+                                if (currentItem + 1 == totalScore)
+                                {
+                                    spinner_puzzles.setSelection(currentItem);
+                                }
+                                else
+                                {
+                                    spinner_puzzles.setSelection(currentItem + 1);
+                                }
                                 if (userScore%2 == 0)
                                 {
                                     int hintCoinAmount = MyDB.getUserHintAmount(spUserID);

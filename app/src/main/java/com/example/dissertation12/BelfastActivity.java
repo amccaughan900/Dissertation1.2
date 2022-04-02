@@ -31,7 +31,19 @@ public class BelfastActivity extends AppCompatActivity
     //Arrays for spinners to adapt
     String[] puzzleArray = new String[]{ "Puzzle 1: This peeling vegetable is not in a good condition.",
             "Puzzle 2: This pub has a name that suggests it is holding some sort of score.",
-            "Puzzle 3: An opaque, all-black gemstone."
+            "Puzzle 3: An opaque, all-black gemstone.",
+            "Puzzle 4: Having proof of where abouts during a crime",
+            "Puzzle 5: An image usually framed and a place to view various art designs",
+            "Puzzle 6: This pub seems to be popular with a certain greek demi-god",
+            "Puzzle 7: A lot of these parts make up a puzzle",
+            "Puzzle 8: This is worn on a foot and a predefined area.",
+            "Puzzle 9: A mythical creature that depicts the head of a human and the body of a lion",
+            "Puzzle 10: Usually comes with lemon, especially in drinks, the sun or a torch emits this to a degree",
+            "Puzzle 11: Many people have done this with a blanket or duvet if they are cold",
+            "Puzzle 12: Entering the world for the first time and growing up in the same place",
+            "Puzzle 13: The name of this business is very ironic, something that is trash whilst also being clean.",
+            "Puzzle 14: A item that is kept as a reminder of someone or something.",
+            "Puzzle 15: A container that is full of flavour liquid"
     };
 
     int currentRegionID = 2;
@@ -120,6 +132,8 @@ public class BelfastActivity extends AppCompatActivity
                 textview_puzzleSelected.setText(itemPuzzle);
                 currentItem = i;
 
+                Log.i("puzzle", puzzleArray[currentItem]);
+
                 int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentItem]);
 
                 int puzzleNumber = currentItem + 1;
@@ -131,13 +145,13 @@ public class BelfastActivity extends AppCompatActivity
                 if (currentPuzzleID == 0)
                 {
                     Log.i("Ignore", "Ignore false puzzle id");
-                    textviewHint.setText("Hint can be found in solved puzzles");
+                    textviewHint.setText("Hint not required, puzzle already solved");
                 }
                 else if (ifPuzzleSolved == true)
                 {
                     puzzleArray[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
                     spinner_puzzles.setAdapter(puzzleAdapter);
-                    textviewHint.setText("Hint can be found in solved puzzles");
+                    textviewHint.setText("Hint not required, puzzle already solved");
                     Log.i("a", "b");
                 }
                 else if(checkHintUnlocked == true)
@@ -264,7 +278,7 @@ public class BelfastActivity extends AppCompatActivity
 
                 else if(firstFourChars.equals("the "))
                 {
-                    Toast.makeText(BelfastActivity.this, "First word can't be 'the_' Read how to play for more info.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BelfastActivity.this, "Start of an answer can't be 'the '", Toast.LENGTH_SHORT).show();
                 }
 
                 else
@@ -291,11 +305,18 @@ public class BelfastActivity extends AppCompatActivity
 
                                 String itemPuzzle = spinner_puzzles.getSelectedItem().toString();
                                 textview_puzzleSelected.setText(itemPuzzle);
+                                edittext_answer.setText("");
                                 //textviewHint.setText("Hint not required, puzzle already solved");
 
                                 spinner_puzzles.setAdapter(puzzleAdapter);
-                                spinner_puzzles.setSelection(currentItem);
-
+                                if (currentItem + 1 == totalScore)
+                                {
+                                    spinner_puzzles.setSelection(currentItem);
+                                }
+                                else
+                                {
+                                    spinner_puzzles.setSelection(currentItem + 1);
+                                }
                                 if (userScore%2 == 0)
                                 {
                                     int hintCoinAmount = MyDB.getUserHintAmount(spUserID);

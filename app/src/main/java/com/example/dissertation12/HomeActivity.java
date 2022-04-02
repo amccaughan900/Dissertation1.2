@@ -1,39 +1,50 @@
 package com.example.dissertation12;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static android.content.ContentValues.TAG;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements SensorEventListener
 {
 
-    Button solvePuzzles, completePuzzles, howToPlay, logout;
-    TextView textViewStepCounter, textViewStepDetector;
+    private static final String[] ACTIVTITY_PERMISSION = {
+        Manifest.permission.ACTIVITY_RECOGNITION
+    };
+
+    Button solvePuzzles, completePuzzles, howToPlay, logout, allowTrackerOnSleep;
+    TextView textViewStepCounter;
     private SensorManager sensorManager;
-    private Sensor mStepCounter;
+    private Sensor pedometer;
     private boolean isCounterSensorPresent;
     int stepCount = 0;
+    private boolean userAllowsTrackingOnPause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        verifyPermission();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         textViewStepCounter = findViewById(R.id.textViewStepCounter);
@@ -42,12 +53,13 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         completePuzzles = (Button) findViewById(R.id.btncompletedpuzzles);
         howToPlay = (Button) findViewById(R.id.btnhowtoplay);
         logout = (Button) findViewById(R.id.btnlogout);
+        allowTrackerOnSleep = findViewById(R.id.btnAllowUserToTrackDuringSleep);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)!=null)
         {
-            mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            pedometer = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
             isCounterSensorPresent = true;
         }
         else
@@ -55,6 +67,60 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
             textViewStepCounter.setText("Walking sensor not found");
             isCounterSensorPresent = false;
         }
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        userAllowsTrackingOnPause = sharedPreferences.getBoolean("Tracker Setting", userAllowsTrackingOnPause);
+
+         Log.i("user choice", String.valueOf(userAllowsTrackingOnPause));
+
+        if (isCounterSensorPresent == false)
+        {
+            allowTrackerOnSleep.setText("Tracker disabled");
+        }
+        else if (userAllowsTrackingOnPause == true)
+        {
+            allowTrackerOnSleep.setText("Tracker sleep mode: on");
+        }
+        else
+        {
+            allowTrackerOnSleep.setText("Tracker sleep mode: off");
+        }
+
+        allowTrackerOnSleep.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (isCounterSensorPresent == false)
+                {
+                    //do nothing
+                }
+                else if (userAllowsTrackingOnPause == true)
+                {
+                    userAllowsTrackingOnPause = false;
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putBoolean("Tracker Setting", userAllowsTrackingOnPause);
+                    editor.apply();
+
+                    allowTrackerOnSleep.setText("Tracker sleep mode: off");
+                }
+                else
+                {
+                    userAllowsTrackingOnPause = true;
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.putBoolean("Tracker Setting", userAllowsTrackingOnPause);
+                    editor.apply();
+                    allowTrackerOnSleep.setText("Tracker sleep mode: on");
+                }
+            }
+        });
 
         solvePuzzles.setOnClickListener(new View.OnClickListener()
         {
@@ -92,11 +158,15 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                         + System.lineSeparator() + System.lineSeparator()
                         + "WARNING"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "When entering answers, usage of 'The' as the first word of any puzzles is invalid even if the answer is correct logically, this is to eliminate confusion on whether the answer should or should not have 'The' at the beginning of their answer. This does not apply to words that start with 'The' like theme or theory."
+                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips. The use of 'The ' as the first word is not allowed when answering. Ever business could logically have 'the ' therefore being redundant."
                         + System.lineSeparator() + System.lineSeparator()
                         + "Unlocking and using hint coins"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by increasing the step counter, which reads the amount of steps a user has done or by correctly answering two puzzles. Each extra clue will cost 1 hint coin.");
+                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 2000 steps so this can be 2000, 4000, 2000 x n, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
+                        + System.lineSeparator() + System.lineSeparator()
+                        + "Users can turn tracking on and off during sleep at any time on the home screen. If you are confused about what sleep means, It means when the user has the app active but not currently opened. This means you can earn coins without having to keep the screen on as long as you're walking and the button 'tracker on sleep' is switched to on. Ensure the text on the button is on for sleep mode to be on. Once the app is destroyed, it will stop."
+                        );
+
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener()
                         {
@@ -111,6 +181,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
+
+
         logout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -122,15 +194,28 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         });
     }
 
+    private void verifyPermission()
+    {
+        Log.d(TAG,"verify Permissions: checking Permisssions.");
+
+        int permisssionPedometer = ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACTIVITY_RECOGNITION);
+
+        if (permisssionPedometer != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(HomeActivity.this, ACTIVTITY_PERMISSION, 1);
+        }
+    }
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        if (sensorEvent.sensor == mStepCounter)
+        if (sensorEvent.sensor == pedometer)
         {
             stepCount = (int) sensorEvent.values[0];
             //String steps = String.valueOf(event.values[0]);
             textViewStepCounter.setText("Steps walked: " + String.valueOf(stepCount));
-            if (stepCount % 100 == 0)
+            if (stepCount % 2000 == 0)
             {
+
                 AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
                 alertDialog.setTitle("Congratulations!");
                 alertDialog.setMessage("By walking " + stepCount + " steps, you have earned a hint coin");
@@ -156,12 +241,28 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        sensorManager.unregisterListener(this, pedometer);
+    }
+
+        @Override
     protected void onPause()
     {
+
         super.onPause();
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) !=null)
+
+        if (userAllowsTrackingOnPause == true)
         {
-            sensorManager.unregisterListener(this, mStepCounter);
+            //Do nothing
+        }
+        else if (userAllowsTrackingOnPause == false)
+        {
+            if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null)
+            {
+                sensorManager.unregisterListener(this, pedometer);
+            }
         }
     }
 
@@ -171,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) !=null)
         {
-            sensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, pedometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 }

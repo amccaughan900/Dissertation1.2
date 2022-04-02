@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity
                     {
                         int thisUserID = MyDB.getUserID(user);
                         String strUserID = String.valueOf(thisUserID);
-                        Toast.makeText(LoginActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,user + " signed in successfully", Toast.LENGTH_SHORT).show();
                         Intent n = new Intent(LoginActivity.this, HomeActivity.class);
                         n.putExtra("UserName", strUserID);
                         startActivity(n);

@@ -6,11 +6,16 @@ import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,8 +99,8 @@ public class BallycastleActivity extends AppCompatActivity
         spinner_puzzles.setAdapter(puzzleAdapter);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         int spUserID = sharedPreferences.getInt("id", 0);
+
 
         userScore = MyDB.getUserScore(spUserID, currentRegionID);
         String strUserScore = String.valueOf(userScore);

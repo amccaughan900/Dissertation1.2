@@ -190,7 +190,7 @@ public class DBHelper extends SQLiteOpenHelper
         }
     }
 
-    public Boolean insertInitialHintCoin(int userID)
+    public Boolean insertHintCoin(int userID)
     {
         int initialHintCoin = 1;
 

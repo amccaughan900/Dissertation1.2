@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             int thisUserID = MyDB.getUserID(user);
 
-                            MyDB.insertInitialHintCoin(thisUserID);
+                            MyDB.insertHintCoin(thisUserID);
 
                             //Toast.makeText(MainActivity.this, user + " registered successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

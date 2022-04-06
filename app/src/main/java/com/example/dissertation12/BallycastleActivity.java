@@ -60,16 +60,16 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 24: Any living creature found in the sea are considered _ life and a place ususally filled with tourists.",
             "Puzzle 25: Playing by the rules and the section of body that contain the most variety of senses."
             };
+    ArrayAdapter puzzleArrayAdapter;
+    int currentSpinnerItem;
 
     int currentRegionID = 1;
-    int currentItem;
 
-    int userScore;
-    int totalScore;
+    int userPuzzleScore;
+    int totalPuzzleScore;
 
-    ArrayAdapter puzzleAdapter;
 
-    int hintCoinAmount;
+    int userHintCoinAmount;
 
     DBHelper MyDB;
 
@@ -94,29 +94,29 @@ public class BallycastleActivity extends AppCompatActivity
         MyDB = new DBHelper(BallycastleActivity.this);
 
 //        Makes the drop down list for valence level by setting an adapter onto the spinner containing vItems array
-        puzzleAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, puzzleArray);
-        puzzleAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        spinner_puzzles.setAdapter(puzzleAdapter);
+        puzzleArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, puzzleArray);
+        puzzleArrayAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        spinner_puzzles.setAdapter(puzzleArrayAdapter);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int spUserID = sharedPreferences.getInt("id", 0);
 
 
-        userScore = MyDB.getUserScore(spUserID, currentRegionID);
-        String strUserScore = String.valueOf(userScore);
-        totalScore = MyDB.getTotalScore(currentRegionID);
-        String strTotalScore = String.valueOf(totalScore);
+        userPuzzleScore = MyDB.getUserScore(spUserID, currentRegionID);
+        String strUserScore = String.valueOf(userPuzzleScore);
+        totalPuzzleScore = MyDB.getTotalScore(currentRegionID);
+        String strTotalScore = String.valueOf(totalPuzzleScore);
         scoreCounter.setText("Score: " + strUserScore + "/" + strTotalScore);
 
-        for (int i = 1; i<totalScore; i++)
+        for (int i = 1; i<totalPuzzleScore; i++)
         {
             Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, puzzleArray[i], currentRegionID);
 
-            int puzzleNumber = i + 1;
+            int thisPuzzleNumber = i + 1;
             if (ifPuzzleSolved == true)
             {
-                puzzleArray[i] = "PUZZLE " + puzzleNumber + ": COMPLETED";
-                spinner_puzzles.setAdapter(puzzleAdapter);
+                puzzleArray[i] = "PUZZLE " + thisPuzzleNumber + ": COMPLETED";
+                spinner_puzzles.setAdapter(puzzleArrayAdapter);
             }
             else
             {
@@ -124,8 +124,8 @@ public class BallycastleActivity extends AppCompatActivity
             }
         }
 
-        hintCoinAmount = MyDB.getUserHintAmount(spUserID);
-        String strHintCoinAmount = String.valueOf(hintCoinAmount);
+        userHintCoinAmount = MyDB.getUserHintAmount(spUserID);
+        String strHintCoinAmount = String.valueOf(userHintCoinAmount);
         hintCoinCounter.setText("Hint coins: " + strHintCoinAmount);
 
         btnGoBack.setOnClickListener(new View.OnClickListener()
@@ -143,17 +143,17 @@ public class BallycastleActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                String itemPuzzle = spinner_puzzles.getSelectedItem().toString();
-                textview_puzzleSelected.setText(itemPuzzle);
-                currentItem = i;
+                String itemSelectedPuzzle = spinner_puzzles.getSelectedItem().toString();
+                textview_puzzleSelected.setText(itemSelectedPuzzle);
+                currentSpinnerItem = i;
 
-                Log.i("puzzle", puzzleArray[currentItem]);
+                Log.i("puzzle", puzzleArray[currentSpinnerItem]);
 
-                int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentItem]);
+                int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentSpinnerItem]);
 
-                int puzzleNumber = currentItem + 1;
+                int puzzleNumber = currentSpinnerItem + 1;
 
-                Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, puzzleArray[currentItem], currentRegionID);
+                Boolean ifPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, puzzleArray[currentSpinnerItem], currentRegionID);
 
                 boolean checkHintUnlocked = MyDB.checkHintUnlocked(spUserID, currentPuzzleID);
 
@@ -164,8 +164,8 @@ public class BallycastleActivity extends AppCompatActivity
                 }
                 else if (ifPuzzleSolved == true)
                 {
-                    puzzleArray[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
-                    spinner_puzzles.setAdapter(puzzleAdapter);
+                    puzzleArray[currentSpinnerItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+                    spinner_puzzles.setAdapter(puzzleArrayAdapter);
                     textviewHint.setText("Hint not required, puzzle already solved");
                     Log.i("a", "b");
                 }
@@ -206,17 +206,15 @@ public class BallycastleActivity extends AppCompatActivity
                                 //Yes button clicked
 
                                 int hintCoinOverZero = MyDB.getUserHintAmount(spUserID);
-                                int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentItem]);
+                                int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentSpinnerItem]);
 
                                 if (hintCoinOverZero < 1)
                                 {
-                                    Log.i("e", "e");
                                     Toast.makeText(BallycastleActivity.this, "You do not have any coins", Toast.LENGTH_SHORT).show();
                                 }
                                 else if (currentPuzzleID == 0)
                                 {
                                     Toast.makeText(BallycastleActivity.this, "Puzzle already solved", Toast.LENGTH_SHORT).show();
-                                    Log.i("f", "f");
                                 }
                                 else
                                 {
@@ -229,12 +227,10 @@ public class BallycastleActivity extends AppCompatActivity
 
                                     else
                                     {
-                                        Log.i("g", "g");
                                         int hintCoinUsed = hintCoinOverZero - 1;
                                         boolean check = MyDB.updateHintAmount(spUserID, hintCoinUsed);
                                         if (check == true)
                                         {
-                                            Log.i("h", "h");
                                             String strHintCoinAmount = String.valueOf(hintCoinUsed);
                                             hintCoinCounter.setText("Hint coins: " + strHintCoinAmount);
 
@@ -284,7 +280,7 @@ public class BallycastleActivity extends AppCompatActivity
                     firstFourChars = lowerCaseUserAnswer;
                 }
 
-                int puzzleNumber = currentItem + 1;
+                int puzzleNumber = currentSpinnerItem + 1;
 
                 if(lowerCaseUserAnswer.equals(""))
                 {
@@ -298,41 +294,41 @@ public class BallycastleActivity extends AppCompatActivity
 
                 else
                 {
-                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, puzzleArray[currentItem], currentRegionID);
+                    Boolean checkPuzzleSolved = MyDB.checkPuzzleSolved(spUserID, puzzleArray[currentSpinnerItem], currentRegionID);
 
-                    if(checkPuzzleSolved==false && !puzzleArray[currentItem].equals("PUZZLE " + puzzleNumber + ": COMPLETED"))
+                    if(checkPuzzleSolved==false && !puzzleArray[currentSpinnerItem].equals("PUZZLE " + puzzleNumber + ": COMPLETED"))
                     {
-                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(puzzleArray[currentItem], lowerCaseUserAnswer);
-                        Boolean checkSecondAnswer = MyDB.checkUserVSPuzzleSecondAnswer(puzzleArray[currentItem], lowerCaseUserAnswer);
+                        Boolean checkAnswer = MyDB.checkUserVSPuzzleAnswer(puzzleArray[currentSpinnerItem], lowerCaseUserAnswer);
+                        Boolean checkSecondAnswer = MyDB.checkUserVSPuzzleSecondAnswer(puzzleArray[currentSpinnerItem], lowerCaseUserAnswer);
 
                         if (checkAnswer == true || checkSecondAnswer == true)
                         {
-                            int puzzleID = MyDB.getPuzzleID(puzzleArray[currentItem]);
+                            int puzzleID = MyDB.getPuzzleID(puzzleArray[currentSpinnerItem]);
                             Boolean correctAnswer = MyDB.insertSolvedAnswer(spUserID, puzzleID);
 
                             if (correctAnswer == true)
                             {
-                                userScore = MyDB.getUserScore(spUserID, currentRegionID);
-                                String strScore = String.valueOf(userScore);
+                                userPuzzleScore = MyDB.getUserScore(spUserID, currentRegionID);
+                                String strScore = String.valueOf(userPuzzleScore);
                                 scoreCounter.setText("Score: " + strScore + "/" + strTotalScore);
 
-                                puzzleArray[currentItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
+                                puzzleArray[currentSpinnerItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
 
                                 String itemPuzzle = spinner_puzzles.getSelectedItem().toString();
                                 textview_puzzleSelected.setText(itemPuzzle);
                                 edittext_answer.setText("");
                                 //textviewHint.setText("Hint not required, puzzle already solved");
 
-                                spinner_puzzles.setAdapter(puzzleAdapter);
-                                if (currentItem + 1 == totalScore)
+                                spinner_puzzles.setAdapter(puzzleArrayAdapter);
+                                if (currentSpinnerItem + 1 == totalPuzzleScore)
                                 {
-                                    spinner_puzzles.setSelection(currentItem);
+                                    spinner_puzzles.setSelection(currentSpinnerItem);
                                 }
                                 else
                                 {
-                                    spinner_puzzles.setSelection(currentItem + 1);
+                                    spinner_puzzles.setSelection(currentSpinnerItem + 1);
                                 }
-                                if (userScore%2 == 0)
+                                if (userPuzzleScore % 4 == 0)
                                 {
                                     int hintCoinAmount = MyDB.getUserHintAmount(spUserID);
 
@@ -340,7 +336,6 @@ public class BallycastleActivity extends AppCompatActivity
                                     boolean check = MyDB.updateHintAmount(spUserID, hintCoinGained);
                                     if (check == true)
                                     {
-                                        Log.i("c", "c");
                                         String strHintCoinAmount = String.valueOf(hintCoinGained);
                                         hintCoinCounter.setText("Hint coins: " + strHintCoinAmount);
 

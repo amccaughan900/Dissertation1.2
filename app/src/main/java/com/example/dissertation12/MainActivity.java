@@ -60,17 +60,18 @@ public class MainActivity extends AppCompatActivity
                 {
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 }
-                else if (pass.length() < 6)
+                else if (pass.length() < 8)
                 {
-                    Toast.makeText(MainActivity.this, "Must have at least 6 characters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Password must have at least 8 characters", Toast.LENGTH_SHORT).show();
                 }
                 else if (pass.equals(repass))
                 {
-                    Boolean checkuser = MyDB.checkusername(user);
 
-                    if(checkuser==false)
+                    Boolean checkUserExists = MyDB.checkUsername(user);
+
+                    if(checkUserExists==false)
                     {
-                        boolean insertUserInfo = MyDB.insertData(user, pass);
+                        boolean insertUserInfo = MyDB.insertUserData(user, pass);
 
                         if (insertUserInfo == true)
                         {
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity
 
                             MyDB.insertHintCoin(thisUserID);
 
-                            //Toast.makeText(MainActivity.this, user + " registered successfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intent);
 
@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity
                             SharedPreferences.Editor editor = sharedPreferences.edit();
 
                             editor.putInt("id", thisUserID);
-                            editor.putString("Username", user);
                             editor.apply();
 
                             Toast.makeText(MainActivity.this, user + " registered successfully" + System.lineSeparator() + "1 Hint coin for joining", Toast.LENGTH_LONG).show();

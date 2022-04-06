@@ -164,18 +164,19 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                 alertDialog.setTitle("How to play");
                 alertDialog.setMessage("The aim of the game is to guess puzzles based on businesses and heritage sites in a region. Users are given clues that are word plays or definitions of the words used in the answer."
                         + System.lineSeparator() + System.lineSeparator()
-                        + "An example of what a puzzle could look like is:" + System.lineSeparator() + System.lineSeparator()
+                        + "An example of what a puzzle could look like is:"
+                        + System.lineSeparator() + System.lineSeparator()
                         + "Puzzle: This place is royalty when it comes to patties."
                         + System.lineSeparator() + System.lineSeparator()
                         + "Answer: Burger King"
                         + System.lineSeparator() + System.lineSeparator()
                         + "WARNING"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips. The use of 'The ' as the first word is not allowed when answering. Ever business could logically have 'the ' therefore being redundant."
+                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips. The use of 'The ' as the first word is not allowed when answering. Every business could logically have 'the ' therefore being redundant. Words like 'theory' or 'theme' can still be used as the first word."
                         + System.lineSeparator() + System.lineSeparator()
                         + "Unlocking and using hint coins"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 2000 steps so this can be 2000, 4000, 2000 x n, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
+                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 4000 steps so this can be 4000, 8000, 4000 x n, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
                         + System.lineSeparator() + System.lineSeparator()
                         + "A hint can be earned while not on the home screen however you will not be notified if that is the case. The hint coin will still be added and if you are solving a puzzle and buy a hint, it may not reduce the counter by 1. This will be the cause. Otherwise, navigating the screens will update the hint coin counter."
                         + System.lineSeparator() + System.lineSeparator()
@@ -233,26 +234,16 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
             SharedPreferences getOldSteps = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             oldStepCount = getOldSteps.getInt("User steps before next activity", 0);
 
-            Log.i("Old Step Count", String.valueOf(oldStepCount));
-            Log.i("Step Count", String.valueOf(stepCount));
-
             if (oldStepCount == stepCount)
             {
                 coinAwardedAlready = true;
             }
 
-            if (stepCount % 2000 == 0 && coinAwardedAlready == false)
+            if (stepCount % 4000 == 0 && coinAwardedAlready == false)
             {
                 hintCoinsAwarded = 1;
 
-                Log.i("normal route", String.valueOf(stepCoinsAchieved));
-
                 updateUserHintAmount(hintCoinsAwarded);
-
-                Log.i("normal route", String.valueOf(stepCoinsAchieved));
-
-                Log.i("Old Step Count", String.valueOf(oldStepCount));
-                Log.i("Step Count", String.valueOf(stepCount));
             }
             //String steps = String.valueOf(event.values[0]);
             textViewStepCounter.setText("Steps walked: " + String.valueOf(stepCount));
@@ -286,7 +277,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
 
         if (userAllowsTrackingOnPause == true)
         {
-            //Do nothing
+            //Allow step count to continue on pause
         }
         else if (userAllowsTrackingOnPause == false)
         {
@@ -310,8 +301,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     private void updateUserHintAmount(int hintCoinsAwarded)
     {
         int userHintAmount = MyDB.getUserHintAmount(spUserID);
-        int updateUserAmount = userHintAmount + hintCoinsAwarded;
-        MyDB.updateHintAmount(spUserID, updateUserAmount);
+        int updatedUserAmount = userHintAmount + hintCoinsAwarded;
+        MyDB.updateHintAmount(spUserID, updatedUserAmount);
         oldStepCount = stepCount;
         coinAwardedAlready = true;
 

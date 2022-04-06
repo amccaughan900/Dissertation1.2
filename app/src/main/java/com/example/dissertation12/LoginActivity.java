@@ -53,17 +53,17 @@ public class LoginActivity extends AppCompatActivity
                     if(checkuserpass==true)
                     {
                         int thisUserID = MyDB.getUserID(user);
-                        String strUserID = String.valueOf(thisUserID);
+
                         Toast.makeText(LoginActivity.this,user + " signed in successfully", Toast.LENGTH_SHORT).show();
-                        Intent n = new Intent(LoginActivity.this, HomeActivity.class);
-                        n.putExtra("UserName", strUserID);
-                        startActivity(n);
+
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
+
 
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
 
                         editor.putInt("id", thisUserID);
-                        editor.putString("Username", user);
                         editor.apply();
 
                     }

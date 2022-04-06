@@ -13,18 +13,15 @@ public class DBHelper extends SQLiteOpenHelper
 {
     private static final String DBNAME = "Login.db";
 
-    //Table to store user data
     private static final String TABLE_USER = "USER_DATA";
     private static final String USER_COL_1 = "USER_ID";
     private static final String USER_COL_2 = "USER_USERNAME";
     private static final String USER_COL_3 = "USER_PASSWORD";
 
-    //Table to store region data
     private static final String TABLE_REGION = "REGION_DATA";
     private static final String REGION_COL_1 = "REGION_ID";
     private static final String REGION_COL_2 = "REGION_NAME";
 
-    //Table to store puzzle data
     private static final String TABLE_PUZZLES = "PUZZLE_DATA";
     private static final String PUZZLE_COL_1 = "PUZZLE_ID";
     private static final String PUZZLE_COL_2 = "PUZZLE_CLUE";
@@ -33,7 +30,6 @@ public class DBHelper extends SQLiteOpenHelper
     private static final String PUZZLE_COL_5 = "PUZZLE_SECOND_ANSWER";
     private static final String PUZZLE_COL_6 = "REGION_ID";
 
-    //Table that joins user and puzzle together to check if puzzle has been solved
     private static final String TABLE_SOLVED = "SOLVED_DATA";
     private static final String SOLVED_COL_1 = "SOLVED_ID";
     private static final String SOLVED_COL_2 = "USER_ID";
@@ -128,7 +124,7 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
 
-    public Boolean checkusername(String username)
+    public Boolean checkUsername(String username)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         String[] columns = { USER_COL_1 };
@@ -171,7 +167,7 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
     //Inserts user information into the user table.
-    public Boolean insertData(String username, String password)
+    public Boolean insertUserData(String username, String password)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -192,12 +188,12 @@ public class DBHelper extends SQLiteOpenHelper
 
     public Boolean insertHintCoin(int userID)
     {
-        int initialHintCoin = 1;
+        int hintCoin = 1;
 
         SQLiteDatabase MyDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(HINT_COL_2, userID);
-        contentValues.put(HINT_COL_3, initialHintCoin);
+        contentValues.put(HINT_COL_3, hintCoin);
 
         long result = MyDB.insert(TABLE_HINT, null, contentValues);
 
@@ -234,7 +230,6 @@ public class DBHelper extends SQLiteOpenHelper
         return userID;
     }
 
-    //Add region id to sql statement as well
     public int getPuzzleID(String puzzleClue)
     {
         int puzzleID = 0;
@@ -265,11 +260,8 @@ public class DBHelper extends SQLiteOpenHelper
     {
         int userScore = 0;
 
-        //Query to count from table where emotion = its string
         String countQuery = "SELECT COUNT (*) FROM " + TABLE_SOLVED +  " INNER JOIN " + TABLE_PUZZLES + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_4 + " = 1" + " AND " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_6 + " ='" + regionID + "'";
-//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
 
-        //Cursor reads database with countQuery
         Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
 
         //If there are records in the count
@@ -289,11 +281,8 @@ public class DBHelper extends SQLiteOpenHelper
     {
         int totalScore = 0;
 
-        //Query to count from table where emotion = its string
         String countQuery = "SELECT COUNT (*) FROM " + TABLE_PUZZLES + " WHERE " + PUZZLE_COL_6 + " ='" + regionID + "'";
-//        private final String MY_QUERY = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
 
-        //Cursor reads database with countQuery
         Cursor cursor = getReadableDatabase().rawQuery(countQuery, null);
 
         //If there are records in the count
@@ -380,7 +369,8 @@ public class DBHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase MyDB = this.getReadableDatabase();
 
-        String idQuery = " SELECT " + HINT_USED_COL_1 + " FROM " + TABLE_HINT_USED + " WHERE " + HINT_USED_COL_2 + " ='" + userID + "'" + " AND " + HINT_USED_COL_3 + " ='" + puzzleID + "'" + " AND " + HINT_USED_COL_4 + "= 1";
+        String idQuery = " SELECT " + HINT_USED_COL_1 + " FROM " + TABLE_HINT_USED + " WHERE " + HINT_USED_COL_2 + " ='"
+                + userID + "'" + " AND " + HINT_USED_COL_3 + " ='" + puzzleID + "'" + " AND " + HINT_USED_COL_4 + "= 1";
         Cursor cursor = MyDB.rawQuery(idQuery, null);
 
         int count = cursor.getCount();
@@ -423,7 +413,8 @@ public class DBHelper extends SQLiteOpenHelper
 
         SQLiteDatabase MyDB = this.getReadableDatabase();
 
-        String hintQuery = "SELECT " + PUZZLE_COL_3 +  " FROM " + TABLE_PUZZLES + " WHERE " + PUZZLE_COL_1 + " ='" + puzzleID + "'";
+        String hintQuery = "SELECT " + PUZZLE_COL_3 +  " FROM " + TABLE_PUZZLES + " WHERE "
+                + PUZZLE_COL_1 + " ='" + puzzleID + "'";
 
         Cursor cursor = MyDB.rawQuery(hintQuery, null);
 
@@ -530,23 +521,22 @@ public class DBHelper extends SQLiteOpenHelper
 
         SQLiteDatabase MyDB = this.getReadableDatabase();
 
-        String queryDB = "SELECT * FROM " + TABLE_PUZZLES  + " INNER JOIN " + TABLE_SOLVED + " ON " + TABLE_PUZZLES + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='" + userID + "'" + " AND " + PUZZLE_COL_6 + " ='" + region + "'" + " AND " + SOLVED_COL_4 + " = 1" + " ORDER BY " + PUZZLE_COL_1;
+        String queryDB = "SELECT * FROM " + TABLE_PUZZLES  + " INNER JOIN " + TABLE_SOLVED + " ON " + TABLE_PUZZLES
+                + "." + PUZZLE_COL_1 + " = " + TABLE_SOLVED + "." + SOLVED_COL_3 + " WHERE " + SOLVED_COL_2 + " ='"
+                + userID + "'" + " AND " + PUZZLE_COL_6 + " ='" + region + "'" + " AND " + SOLVED_COL_4 + " = 1" + " ORDER BY " + PUZZLE_COL_1;
 
         Cursor cursor = MyDB.rawQuery(queryDB, null);
 
-        //Populates the list with each record in database.
         if (cursor.moveToFirst())
         {
-            //Loops through the results and puts them into new objects to put into the list while cursor can move to next set.
             do
             {
                 String puzzleName = cursor.getString(1);
                 String puzzleHint = cursor.getString(2);
                 String puzzleAnswer = cursor.getString(3);
 
-                //EmotionModel constructor is called here to hold each value and pass into newEvent
                 PuzzleModel newEvent = new PuzzleModel(puzzleName, puzzleHint, puzzleAnswer);
-                //Adds newEvent to returnList array
+
                 returnPuzzleSolved.add(newEvent);
             }
 
@@ -555,10 +545,9 @@ public class DBHelper extends SQLiteOpenHelper
 
         else
         {
-            //Error: do not add to the list
+
         }
 
-        //Closes both database and cursor when finished.
         cursor.close();
         MyDB.close();
 

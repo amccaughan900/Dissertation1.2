@@ -21,14 +21,14 @@ public class BallycastleSolvedActivity extends AppCompatActivity
 
     TextView scoreCounter;
 
-    private ListView ballycastlePuzzleSolvedLV;
+    private ListView listviewPuzzlesSolved;
 
-    ArrayAdapter ballycastlePuzzleSolvedAdapter;
+    ArrayAdapter puzzleSolvedAdapter;
 
     int currentRegionID = 1;
 
     int userScore;
-    int totalBallycastleScore;
+    int totalScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +40,7 @@ public class BallycastleSolvedActivity extends AppCompatActivity
 
         scoreCounter = findViewById(R.id.score);
 
-        ballycastlePuzzleSolvedLV = findViewById(R.id.solvedRecordsLV);
+        listviewPuzzlesSolved = findViewById(R.id.solvedRecordsLV);
 
         MyDB = new DBHelper(this);
 
@@ -60,12 +60,13 @@ public class BallycastleSolvedActivity extends AppCompatActivity
 
         userScore = MyDB.getUserScore(spUserID, currentRegionID);
         String strUserScore = String.valueOf(userScore);
-        totalBallycastleScore = MyDB.getTotalScore(currentRegionID);
-        String strTotalScore = String.valueOf(totalBallycastleScore);
+        totalScore = MyDB.getTotalScore(currentRegionID);
+        String strTotalScore = String.valueOf(totalScore);
         scoreCounter.setText("Ballycastle Score: " + strUserScore + "/" + strTotalScore);
 
-        ballycastlePuzzleSolvedAdapter = new ArrayAdapter<>(BallycastleSolvedActivity.this, android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
-        ballycastlePuzzleSolvedLV.setAdapter(ballycastlePuzzleSolvedAdapter);
+        puzzleSolvedAdapter = new ArrayAdapter<>(BallycastleSolvedActivity.this,
+                android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
+        listviewPuzzlesSolved.setAdapter(puzzleSolvedAdapter);
 
     }
 

@@ -64,8 +64,7 @@ public class BallycastleSolvedActivity extends AppCompatActivity
         String strTotalScore = String.valueOf(totalScore);
         scoreCounter.setText("Ballycastle Score: " + strUserScore + "/" + strTotalScore);
 
-        puzzleSolvedAdapter = new ArrayAdapter<>(BallycastleSolvedActivity.this,
-                android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
+        puzzleSolvedAdapter = new ArrayAdapter<>(BallycastleSolvedActivity.this, android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
         listviewPuzzlesSolved.setAdapter(puzzleSolvedAdapter);
 
     }

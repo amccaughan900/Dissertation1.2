@@ -21,14 +21,14 @@ public class BelfastSolvedActivity extends AppCompatActivity
 
     TextView scoreCounter;
 
-    private ListView belfastPuzzleSolvedLV;
+    private ListView listviewPuzzlesSolved;
 
-    ArrayAdapter belfastPuzzleSolvedAdapter;
+    ArrayAdapter puzzleSolvedAdapter;
 
     int currentRegionID = 2;
 
     int userScore;
-    int totalBelfastScore;
+    int totalScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +40,7 @@ public class BelfastSolvedActivity extends AppCompatActivity
 
         scoreCounter = findViewById(R.id.score);
 
-        belfastPuzzleSolvedLV = findViewById(R.id.solvedRecordsLV);
+        listviewPuzzlesSolved = findViewById(R.id.solvedRecordsLV);
 
         MyDB = new DBHelper(this);
 
@@ -60,11 +60,11 @@ public class BelfastSolvedActivity extends AppCompatActivity
 
         userScore = MyDB.getUserScore(spUserID, currentRegionID);
         String strUserScore = String.valueOf(userScore);
-        totalBelfastScore = MyDB.getTotalScore(currentRegionID);
-        String strTotalScore = String.valueOf(totalBelfastScore);
+        totalScore = MyDB.getTotalScore(currentRegionID);
+        String strTotalScore = String.valueOf(totalScore);
         scoreCounter.setText("Belfast Score: " + strUserScore + "/" + strTotalScore);
 
-        belfastPuzzleSolvedAdapter = new ArrayAdapter<>(BelfastSolvedActivity.this, android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
-        belfastPuzzleSolvedLV.setAdapter(belfastPuzzleSolvedAdapter);
+        puzzleSolvedAdapter = new ArrayAdapter<>(BelfastSolvedActivity.this, android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
+        listviewPuzzlesSolved.setAdapter(puzzleSolvedAdapter);
     }
 }

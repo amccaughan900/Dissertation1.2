@@ -17,6 +17,7 @@ public class DBHelper extends SQLiteOpenHelper
     private static final String USER_COL_1 = "USER_ID";
     private static final String USER_COL_2 = "USER_USERNAME";
     private static final String USER_COL_3 = "USER_PASSWORD";
+    private static final String USER_COL_4 = "USER_SECRET_ANSWER";
 
     private static final String TABLE_REGION = "REGION_DATA";
     private static final String REGION_COL_1 = "REGION_ID";
@@ -50,13 +51,13 @@ public class DBHelper extends SQLiteOpenHelper
 
     public DBHelper(Context context)
     {
-        super(context, "Login.db", null, 41);
+        super(context, "Login.db", null, 43);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDB)
     {
-        MyDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USER + "(USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, USER_USERNAME TEXT, USER_PASSWORD TEXT)");
+        MyDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USER + "(USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, USER_USERNAME TEXT, USER_PASSWORD TEXT, USER_SECRET_ANSWER TEXT)");
         MyDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_REGION + "(REGION_ID INTEGER PRIMARY KEY AUTOINCREMENT, REGION_NAME TEXT)");
         MyDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PUZZLES + "(PUZZLE_ID INTEGER PRIMARY KEY AUTOINCREMENT, PUZZLE_CLUE TEXT, PUZZLE_HINT TEXT,PUZZLE_ANSWER TEXT, PUZZLE_SECOND_ANSWER TEXT, REGION_ID INTEGER, FOREIGN KEY(REGION_ID) REFERENCES TABLE_REGION(REGION_ID))");
         MyDB.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SOLVED + "(SOLVED_ID INTEGER PRIMARY KEY AUTOINCREMENT, USER_ID INTEGER, PUZZLE_ID INTEGER, IS_SOLVED INTEGER, FOREIGN KEY(USER_ID) REFERENCES TABLE_USER(USER_ID), FOREIGN KEY(PUZZLE_ID) REFERENCES TABLE_PUZZLE(PUZZLE_ID))");
@@ -116,10 +117,10 @@ public class DBHelper extends SQLiteOpenHelper
         //Drops tables when new version of database is created
         MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_PUZZLES);
         MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_REGION);
-        //MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_SOLVED);
-//        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_HINT);
-//        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_HINT_USED);
-        //MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_USER);
+        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_SOLVED);
+        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_HINT);
+        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_HINT_USED);
+        MyDB.execSQL(" DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(MyDB);
     }
 
@@ -167,12 +168,13 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
     //Inserts user information into the user table.
-    public Boolean insertUserData(String username, String password)
+    public Boolean insertUserData(String username, String password, String secretAnswer)
     {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_COL_2, username);
         contentValues.put(USER_COL_3, password);
+        contentValues.put(USER_COL_4, secretAnswer);
 
         long result = MyDB.insert(TABLE_USER, null, contentValues);
 
@@ -185,6 +187,51 @@ public class DBHelper extends SQLiteOpenHelper
             return true;
         }
     }
+
+    public boolean checkResetAllowed(String user, String secterAnswer)
+    {
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+
+        String idQuery = " SELECT " + USER_COL_1 +  " FROM " + TABLE_USER + " WHERE " + USER_COL_2 + " ='" + user + "'" + " AND " + USER_COL_4 + " ='" + secterAnswer + "'";
+
+        Cursor cursor = MyDB.rawQuery(idQuery, null);
+//
+        int count = cursor.getCount();
+        MyDB.close();
+        cursor.close();
+
+        if (count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean updateUserInfo(int userID, String newPassword)
+    {
+        //Allows for writing into the database
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        //Stores the column values
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_COL_3, newPassword);
+
+        long update = MyDB.update(TABLE_USER, cv, "USER_ID" + " = ?", new String[] {String.valueOf(userID)});
+
+        if (update == -1)
+        {
+            return false;
+        }
+
+        else
+        {
+            return true;
+        }
+    }
+
 
     public Boolean insertHintCoin(int userID)
     {
@@ -321,26 +368,6 @@ public class DBHelper extends SQLiteOpenHelper
 
         return hintAmount;
     }
-
-    //Method to update user profile
-
-//    public boolean updateUserAccount(int userID, String username)
-//    {
-//        //Allows for writing into the database
-//        SQLiteDatabase MyDB = this.getWritableDatabase();
-//        //Stores the column values
-//        ContentValues cv = new ContentValues();
-//
-//        cv.put(USER_COL_2, username);
-//
-//        long update = MyDB.update(TABLE_USER, cv, "USER_ID" + " = ?", new String[]{String.valueOf(userID)});
-//
-//        if (update == -1) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
 
     public boolean updateHintAmount(int userID, int hintAmount)
     {

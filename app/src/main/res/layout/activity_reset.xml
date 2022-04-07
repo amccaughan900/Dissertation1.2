@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".LoginActivity">
+    tools:context=".ResetActivity">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -20,55 +20,67 @@
                 android:id="@+id/textviewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login Page"
+                android:text="Reset Page"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"/>
 
             <EditText
-                android:id="@+id/username1"
+                android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textviewTitle"
                 android:layout_marginTop="50dp"
                 android:hint="Enter username here" />
 
-            <EditText
-                android:id="@+id/password1"
+            <TextView
+                android:id="@+id/textviewSecretQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/username1"
-                android:layout_marginTop="50dp"
-                android:hint="Enter password here"
-                android:inputType="textPassword" />
-
-            <Button
-                android:id="@+id/btnsignin1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/password1"
+                android:text="Secret question: Where were you born?"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/purple_700"
-                android:text="Sign in" />
+                android:textSize="20dp"
+                android:textColor="#a83232"
+                android:layout_below="@+id/username"
+                android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnsignup"
+            <EditText
+                android:id="@+id/secretAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/btnsignin1"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/purple_700"
-                android:text="New user? Register here!" />
+                android:hint="Enter your secret answer here"
+                android:inputType="textPassword"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/textviewSecretQuestion"/>
 
             <Button
                 android:id="@+id/btnreset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/btnsignup"
+                android:layout_below="@+id/secretAnswer"
                 android:layout_marginTop="20dp"
-                android:backgroundTint="#a83232"
-                android:text="Forgotten password?" />
+                android:backgroundTint="@color/purple_700"
+                android:text="Reset your password here" />
+
+            <Button
+                android:id="@+id/btnsignin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnreset"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="Sign in page" />
+
+            <Button
+                android:id="@+id/btnsignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnsignin"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/purple_700"
+                android:text="New user? Register here!" />
+
 
         </RelativeLayout>
 

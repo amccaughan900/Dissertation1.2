@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
 {
 
-    EditText username, password, repassword;
+    EditText username, password, repassword, editTextsecretAnswer;
     Button signup, signin;
     DBHelper MyDB;
     @Override
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         repassword = (EditText) findViewById(R.id.repassword);
+        editTextsecretAnswer = findViewById(R.id.secretAnswer);
         signup = (Button) findViewById(R.id.btnsignup);
         signin = (Button) findViewById(R.id.btnsignin);
 
@@ -55,8 +56,9 @@ public class MainActivity extends AppCompatActivity
                 String user = username.getText().toString();
                 String pass = password.getText().toString();
                 String repass = repassword.getText().toString();
+                String secretAnswer = editTextsecretAnswer.getText().toString();
 
-                if(user.equals("")||pass.equals("")||repass.equals(""))
+                if(user.equals("")||pass.equals("")||repass.equals("")||secretAnswer.equals(""))
                 {
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 }
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
                     if(checkUserExists==false)
                     {
-                        boolean insertUserInfo = MyDB.insertUserData(user, pass);
+                        boolean insertUserInfo = MyDB.insertUserData(user, pass, secretAnswer);
 
                         if (insertUserInfo == true)
                         {

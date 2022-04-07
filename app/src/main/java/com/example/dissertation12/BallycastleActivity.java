@@ -159,7 +159,6 @@ public class BallycastleActivity extends AppCompatActivity
 
                 if (currentPuzzleID == 0)
                 {
-                    Log.i("Ignore", "Ignore false puzzle id");
                     textviewHint.setText("Hint not required, puzzle already solved");
                 }
                 else if (ifPuzzleSolved == true)
@@ -167,18 +166,15 @@ public class BallycastleActivity extends AppCompatActivity
                     puzzleArray[currentSpinnerItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
                     spinner_puzzles.setAdapter(puzzleArrayAdapter);
                     textviewHint.setText("Hint not required, puzzle already solved");
-                    Log.i("a", "b");
                 }
                 else if(checkHintUnlocked == true)
                 {
                     String hintText = MyDB.getPuzzleHint(currentPuzzleID);
                     textviewHint.setText(hintText);
-                    Log.i("b", "b");
                 }
                 else
                 {
                     textviewHint.setText("Locked Hint. Buy hint to unlock");
-                    Log.i("c", "c");
                 }
 
 

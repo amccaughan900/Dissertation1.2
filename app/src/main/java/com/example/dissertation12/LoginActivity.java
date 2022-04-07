@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity
 {
 
     EditText username, password;
-    Button btnlogin, btnsignup;
+    Button btnlogin, btnsignup, btnreset;
     DBHelper MyDB;
 
     @Override
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity
         password = (EditText) findViewById(R.id.password1);
         btnlogin = (Button) findViewById(R.id.btnsignin1);
         btnsignup = findViewById(R.id.btnsignup);
+        btnreset = findViewById(R.id.btnreset);
 
         MyDB = new DBHelper(this);
 
@@ -83,6 +84,16 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnreset.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), ResetActivity.class);
                 startActivity(intent);
             }
         });

@@ -63,7 +63,7 @@ public class BelfastActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ballycastle);
+        setContentView(R.layout.activity_belfast);
 
         spinner_puzzles = findViewById(R.id.spinnerPuzzle);
 

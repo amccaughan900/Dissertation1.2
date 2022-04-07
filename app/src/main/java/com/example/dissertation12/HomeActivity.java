@@ -170,6 +170,8 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                         + System.lineSeparator() + System.lineSeparator()
                         + "Answer: Burger King"
                         + System.lineSeparator() + System.lineSeparator()
+                        + "Some clues may show this symbol _ . This represents the word in the answer so an example may be puzzle1: _ shore. The answer would be sea as it fits into sea shore"
+                        + System.lineSeparator() + System.lineSeparator()
                         + "WARNING"
                         + System.lineSeparator() + System.lineSeparator()
                         + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips. The use of 'The ' as the first word is not allowed when answering. Every business could logically have 'the ' therefore being redundant. Words like 'theory' or 'theme' can still be used as the first word."
@@ -180,7 +182,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                         + System.lineSeparator() + System.lineSeparator()
                         + "A hint can be earned while not on the home screen however you will not be notified if that is the case. The hint coin will still be added and if you are solving a puzzle and buy a hint, it may not reduce the counter by 1. This will be the cause. Otherwise, navigating the screens will update the hint coin counter."
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Users can turn tracking on and off during sleep at any time on the home screen. If you are confused about what sleep means, It means when the user has the app active but not currently opened. This means you can earn coins without having to keep the screen on as long as you're walking and the button 'tracker on sleep' is switched to on. Ensure the text on the button is on for sleep mode to be on. Once the app is destroyed, it will stop."
+                        + "Users can turn tracking on and off during sleep at any time on the home screen. If you are confused about what sleep means, it means when the user has the app active but not currently opened. This means you can earn coins without having to keep the screen active as long as you're walking and the button 'tracker on sleep' is switched to on. Ensure the text within the button is turned on for sleep mode to be on. Once the app is fully closed, it will stop."
                 );
 
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

@@ -47,7 +47,7 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 11: Ususal award for being runners-up and an extremely steep incline made of rock",
             "Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight",
             "Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety",
-            "Puzzle 14: Spice and friends",
+            "Puzzle 14: Herb and friends",
             "Puzzle 15: A tool used to cut metal wiring",
             "Puzzle 16: Angels are usually depicted to have this above their head",
             "Puzzle 17: It does not have a deck that the namesake would have us believe",
@@ -57,7 +57,7 @@ public class BallycastleActivity extends AppCompatActivity
             "Puzzle 21: _ & pestle",
             "Puzzle 22: This business shares the name of a magic nanny in a movie",
             "Puzzle 23: Where would  most of the rackets be in the town",
-            "Puzzle 24: Any living creature found in the sea are considered _ life and a place ususally filled with tourists.",
+            "Puzzle 24: Any living creature found in the sea are considered _ life and a place usually filled with tourists.",
             "Puzzle 25: Playing by the rules and the section of body that contain the most variety of senses."
             };
     ArrayAdapter puzzleArrayAdapter;

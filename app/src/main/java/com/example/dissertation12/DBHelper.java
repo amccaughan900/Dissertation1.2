@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper
 
     public DBHelper(Context context)
     {
-        super(context, "Login.db", null, 43);
+        super(context, "Login.db", null, 44);
     }
 
     @Override
@@ -78,9 +78,9 @@ public class DBHelper extends SQLiteOpenHelper
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 9: DIY that is in a gorgeous state', 'Location: Located between the park and the town centre.', 'Homemade Beautiful', 'Home Made Beautiful', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 10: Owning something together and a famous female country-pop singer', 'Location: Traffic lights can be seen from this place', 'Our Dollys', 'Our Dollys Cafe', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 11: Ususal award for being runners-up and an extremely steep incline made of rock', 'Hint: Cutlery is this colour normally and something only rock climbers should attempt to climb.', 'Silver Cliffs', 'Silvercliffs', 1)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight', 'Hint: A father would say this to his boy if he did not hear him and a place for sore eyes','Watsons Optican', 'Watsons Opticans', 1)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety', 'Location: This place has front-row seats for a view of Rathlin Island','Sea Heaven', 'Sea Heaven Therapy', 1)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 14: Spice and friends', 'Location: It is near Round-About somewhere','Thyme and co', 'Thyme and co cafe', 1)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight', 'Hint: A father would say this to his boy if he did not hear him and a place for sore eyes','Watsons Optician', 'Watsons Opticians', 1)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety', 'Location: This place has front-row seats for a view of Rathlin Island','Sea Haven', 'Sea Haven Therapy', 1)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 14: Herb and friends', 'Location: It is near Round-About somewhere','Thyme and co', 'Thyme and co cafe', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 15: A tool used to cut metal wiring', 'Location: The business in front of it could make decent use of a cutting tool.','Snip', 'Snips', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 16: Angels are usually depicted to have this above their head', 'Hint: Shaped like a ring.','Halo', 'Halo Nightclub', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 17: It does not have a deck that the namesake would have us believe', 'Location: Beside another business of the same name','D J Mclister', 'DJ McLister', 1)");
@@ -90,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 21: _ & pestle', 'Hint: Can be a name for a male','Mortons', 'Mortons fish and chips', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 22: This business shares the name of a magic nanny in a movie', 'Hint: M _ A _ E _','McAfee', 'McAfee properties', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 23: Where would  most of the rackets be in the town', 'Hint: The question is more directed than you might think. The last word is court to help you.','Ballycastle Tennis court', 'Tennis court', 1)");
-        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 24: Any living creature found in the sea are considered _ life and a place ususally filled with tourists.', 'Location: On the corner of a road, with the view of the sea straight ahead of it.','Marine Hotel', 'Marine', 1)");
+        MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 24: Any living creature found in the sea are considered _ life and a place usually filled with tourists.', 'Location: On the corner of a road, with the view of the sea straight ahead of it.','Marine Hotel', 'Marine', 1)");
         MyDB.execSQL("INSERT INTO " + TABLE_PUZZLES + "(PUZZLE_CLUE, PUZZLE_HINT, PUZZLE_ANSWER, PUZZLE_SECOND_ANSWER, REGION_ID) VALUES ('Puzzle 25: Playing by the rules and the section of body that contain the most variety of senses.', 'Location: Not directly in Ballycastle but there for all to see','Fair Head', '', 1)");
 
 

@@ -1,5 +1,6 @@
 package com.example.dissertation12;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity
 
     EditText username, password, repassword, editTextsecretAnswer;
     Button signup, signin;
-    DBHelper MyDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -30,8 +31,6 @@ public class MainActivity extends AppCompatActivity
         editTextsecretAnswer = findViewById(R.id.secretAnswer);
         signup = (Button) findViewById(R.id.btnsignup);
         signin = (Button) findViewById(R.id.btnsignin);
-
-        MyDB = new DBHelper(this);
 
         registerUser();
 
@@ -48,6 +47,9 @@ public class MainActivity extends AppCompatActivity
 
     private void registerUser()
     {
+        DBHelper MyDB;
+        MyDB = new DBHelper(this);
+
         signup.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -2,13 +2,12 @@ package com.example.dissertation12;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,17 +18,44 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BelfastActivity extends AppCompatActivity
+public class SolvePuzzleActivity extends AppCompatActivity
 {
-
     //Names of spinners widgets
     Spinner spinner_puzzles;
-    TextView textview_puzzleSelected, scoreCounter, hintCoinCounter, textviewHint;
+    TextView textviewTitle, textview_puzzleSelected, scoreCounter, hintCoinCounter, textviewHint;
     EditText edittext_answer;
     Button btnGoBack, btn_answerPuzzle, btnHint;
 
     //Arrays for spinners to adapt
-    String[] puzzleArray = new String[]{ "Puzzle 1: This peeling vegetable is not in a good condition.",
+    String[] ballycastlePuzzleArray = new String[]{ "Puzzle 1: A shining form of potato?",
+            "Puzzle 2: A colour and a mythic being, simple right?",
+            "Puzzle 3: This bar will fill the spot after some dinner",
+            "Puzzle 4: Bakers are expected to do this.",
+            "Puzzle 5: A colour of the rainbow",
+            "Puzzle 6: Two word answer: 1st - _ & pepper, 2nd - a building for living in.",
+            "Puzzle 7: A walkway alongside the seafront",
+            "Puzzle 8: The name of this bar is based on a precious gem usually given in an engagement.",
+            "Puzzle 9: DIY that is in a gorgeous state",
+            "Puzzle 10: Owning something together and a famous female country-pop singer",
+            "Puzzle 11: Ususal award for being runners-up and an extremely steep incline made of rock",
+            "Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight",
+            "Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety",
+            "Puzzle 14: Herb and a short term for a company",
+            "Puzzle 15: A tool used to cut metal wiring",
+            "Puzzle 16: Angels are usually depicted to have this above their head",
+            "Puzzle 17: It does not have a music deck that the namesake would have us believe",
+            "Puzzle 18: A chicken lives in this",
+            "Puzzle 19: A metallic element in the periodic table, symbolised by pt.",
+            "Puzzle 20: Another word for coast and a winged animal",
+            "Puzzle 21: Flies do not want to get caught up in these",
+            "Puzzle 22: This business shares the name of a magic nanny in a movie",
+            "Puzzle 23: Where would most of the rackets be in the town",
+            "Puzzle 24: Any living creature found in the sea are considered _ life and a building usually filled with tourists.",
+            "Puzzle 25: Playing by the rules and the section of body that contain the most variety of senses."
+    };
+
+    //Arrays for spinners to adapt
+    String[] belfastPuzzleArray = new String[]{ "Puzzle 1: This peeling vegetable is not in a good condition.",
             "Puzzle 2: This pub has a name that suggests it is holding some sort of score.",
             "Puzzle 3: An opaque, all-black gemstone.",
             "Puzzle 4: Having proof of where abouts during a crime",
@@ -46,24 +72,21 @@ public class BelfastActivity extends AppCompatActivity
             "Puzzle 15: A container that is full of flavour liquid"
     };
 
-    ArrayAdapter puzzleArrayAdapter;
+    ArrayAdapter ballycastlePuzzleArrayAdapter, belfastPuzzleArrayAdapter;
     int currentSpinnerItem;
-
-    int currentRegionID = 2;
 
     int userPuzzleScore;
     int totalPuzzleScore;
 
-
     int userHintCoinAmount;
-
-    DBHelper MyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_belfast);
+        setContentView(R.layout.activity_solve_puzzle);
+
+        textviewTitle = findViewById(R.id.textviewTitle);
 
         spinner_puzzles = findViewById(R.id.spinnerPuzzle);
 
@@ -77,16 +100,38 @@ public class BelfastActivity extends AppCompatActivity
         btn_answerPuzzle = (Button) findViewById(R.id.btnAnswer);
         btnHint = findViewById(R.id.btnHint);
 
-        MyDB = new DBHelper(BelfastActivity.this);
-
-//        Makes the drop down list for valence level by setting an adapter onto the spinner containing vItems array
-        puzzleArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, puzzleArray);
-        puzzleArrayAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        spinner_puzzles.setAdapter(puzzleArrayAdapter);
+        SharedPreferences getRegionID = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int currentRegionID = getRegionID.getInt("regionID", 0);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int spUserID = sharedPreferences.getInt("id", 0);
 
+        if (currentRegionID == 1)
+        {
+            textviewTitle.setText("Ballycastle's Puzzles");
+
+            ballycastlePuzzleArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ballycastlePuzzleArray);
+            ballycastlePuzzleArrayAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            spinner_puzzles.setAdapter(ballycastlePuzzleArrayAdapter);
+
+            regionSelectedBuilder(ballycastlePuzzleArray, ballycastlePuzzleArrayAdapter, spUserID, currentRegionID);
+        }
+        else if(currentRegionID == 2)
+        {
+            textviewTitle.setText("Belfast's Puzzles");
+
+            belfastPuzzleArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, belfastPuzzleArray);
+            belfastPuzzleArrayAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            spinner_puzzles.setAdapter(belfastPuzzleArrayAdapter);
+
+            regionSelectedBuilder(belfastPuzzleArray, belfastPuzzleArrayAdapter, spUserID, currentRegionID);
+        }
+    }
+
+    private void regionSelectedBuilder(String puzzleArray[], ArrayAdapter puzzleArrayAdapter, int spUserID, int currentRegionID)
+    {
+        DBHelper MyDB;
+        MyDB = new DBHelper(this);
 
         userPuzzleScore = MyDB.getUserScore(spUserID, currentRegionID);
         String strUserScore = String.valueOf(userPuzzleScore);
@@ -145,7 +190,6 @@ public class BelfastActivity extends AppCompatActivity
 
                 if (currentPuzzleID == 0)
                 {
-                    Log.i("Ignore", "Ignore false puzzle id");
                     textviewHint.setText("Hint not required, puzzle already solved");
                 }
                 else if (ifPuzzleSolved == true)
@@ -153,18 +197,15 @@ public class BelfastActivity extends AppCompatActivity
                     puzzleArray[currentSpinnerItem] = "PUZZLE " + puzzleNumber + ": COMPLETED";
                     spinner_puzzles.setAdapter(puzzleArrayAdapter);
                     textviewHint.setText("Hint not required, puzzle already solved");
-                    Log.i("a", "b");
                 }
                 else if(checkHintUnlocked == true)
                 {
                     String hintText = MyDB.getPuzzleHint(currentPuzzleID);
                     textviewHint.setText(hintText);
-                    Log.i("b", "b");
                 }
                 else
                 {
                     textviewHint.setText("Locked Hint. Buy hint to unlock");
-                    Log.i("c", "c");
                 }
 
 
@@ -196,13 +237,11 @@ public class BelfastActivity extends AppCompatActivity
 
                                 if (hintCoinOverZero < 1)
                                 {
-                                    Log.i("e", "e");
-                                    Toast.makeText(BelfastActivity.this, "You do not have any coins", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SolvePuzzleActivity.this, "You do not have any coins", Toast.LENGTH_SHORT).show();
                                 }
                                 else if (currentPuzzleID == 0)
                                 {
-                                    Toast.makeText(BelfastActivity.this, "Puzzle already solved", Toast.LENGTH_SHORT).show();
-                                    Log.i("f", "f");
+                                    Toast.makeText(SolvePuzzleActivity.this, "Puzzle already solved", Toast.LENGTH_SHORT).show();
                                 }
                                 else
                                 {
@@ -210,17 +249,15 @@ public class BelfastActivity extends AppCompatActivity
 
                                     if (checkHintUnlocked == true)
                                     {
-                                        Toast.makeText(BelfastActivity.this, "Hint already purchased", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SolvePuzzleActivity.this, "Hint already purchased", Toast.LENGTH_SHORT).show();
                                     }
 
                                     else
                                     {
-                                        Log.i("g", "g");
                                         int hintCoinUsed = hintCoinOverZero - 1;
                                         boolean check = MyDB.updateHintAmount(spUserID, hintCoinUsed);
                                         if (check == true)
                                         {
-                                            Log.i("h", "h");
                                             String strHintCoinAmount = String.valueOf(hintCoinUsed);
                                             hintCoinCounter.setText("Hint coins: " + strHintCoinAmount);
 
@@ -244,7 +281,7 @@ public class BelfastActivity extends AppCompatActivity
                     }
                 };
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BelfastActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SolvePuzzleActivity.this);
                 builder.setMessage("Would you like to unlock this puzzle's hint?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
             }
@@ -257,29 +294,21 @@ public class BelfastActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 String userAnswer = edittext_answer.getText().toString();
+
+                userAnswer = userAnswer.replaceAll("\'","");
                 String lowerCaseUserAnswer = userAnswer.toLowerCase();
 
-                String firstFourChars = "";   //substring that will contain first 4 characters of user answer
-
-                if (lowerCaseUserAnswer.length() > 4)
+                String checkForInitialThe = lowerCaseUserAnswer.substring(0, 4);
+                if (checkForInitialThe.equals("the "))
                 {
-                    firstFourChars = lowerCaseUserAnswer.substring(0, 4);
-                }
-                else
-                {
-                    firstFourChars = lowerCaseUserAnswer;
+                    lowerCaseUserAnswer = lowerCaseUserAnswer.replaceFirst("the ", "");
                 }
 
                 int puzzleNumber = currentSpinnerItem + 1;
 
                 if(lowerCaseUserAnswer.equals(""))
                 {
-                    Toast.makeText(BelfastActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
-                }
-
-                else if(firstFourChars.equals("the "))
-                {
-                    Toast.makeText(BelfastActivity.this, "Start of an answer can't be 'the '", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SolvePuzzleActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
                 }
 
                 else
@@ -318,7 +347,7 @@ public class BelfastActivity extends AppCompatActivity
                                 {
                                     spinner_puzzles.setSelection(currentSpinnerItem + 1);
                                 }
-                                if (userPuzzleScore%4 == 0)
+                                if (userPuzzleScore % 4 == 0)
                                 {
                                     int hintCoinAmount = MyDB.getUserHintAmount(spUserID);
 
@@ -326,35 +355,33 @@ public class BelfastActivity extends AppCompatActivity
                                     boolean check = MyDB.updateHintAmount(spUserID, hintCoinGained);
                                     if (check == true)
                                     {
-                                        Log.i("c", "c");
                                         String strHintCoinAmount = String.valueOf(hintCoinGained);
                                         hintCoinCounter.setText("Hint coins: " + strHintCoinAmount);
 
-                                        Toast.makeText(BelfastActivity.this, "Correct, the answer is " + lowerCaseUserAnswer + System.lineSeparator() + "Reward: 1 hint coin gained.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SolvePuzzleActivity.this, "Correct, the answer is " + userAnswer + System.lineSeparator() + "Reward: 1 hint coin gained.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 else
                                 {
-                                    Toast.makeText(BelfastActivity.this, "Correct, the answer is " + lowerCaseUserAnswer, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SolvePuzzleActivity.this, "Correct, the answer is " + userAnswer, Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else
                             {
-                                Toast.makeText(BelfastActivity.this, "There's been an error ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SolvePuzzleActivity.this, "There's been an error ", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else
                         {
-                            Toast.makeText(BelfastActivity.this, "Incorrect, please try again.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SolvePuzzleActivity.this, "Incorrect, please try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
                     {
-                        Toast.makeText(BelfastActivity.this, "This puzzle has already been solved!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SolvePuzzleActivity.this, "This puzzle has already been solved!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-
     }
 }

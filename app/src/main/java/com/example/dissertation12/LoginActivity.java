@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity
 
     EditText username, password;
     Button btnlogin, btnsignup, btnreset;
-    DBHelper MyDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +33,32 @@ public class LoginActivity extends AppCompatActivity
         btnsignup = findViewById(R.id.btnsignup);
         btnreset = findViewById(R.id.btnreset);
 
+        clickBtnLogin();
+
+        btnsignup.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnreset.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), ResetActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void clickBtnLogin()
+    {
+        DBHelper MyDB;
         MyDB = new DBHelper(this);
 
         btnlogin.setOnClickListener(new View.OnClickListener()
@@ -75,26 +101,6 @@ public class LoginActivity extends AppCompatActivity
 
                 }
 
-            }
-        });
-
-        btnsignup.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnreset.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(getApplicationContext(), ResetActivity.class);
-                startActivity(intent);
             }
         });
     }

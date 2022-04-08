@@ -10,7 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Dissertation12">
+        android:theme="@style/Theme.MyLocalPuzzleTheme">
+        <activity
+            android:name=".PuzzlesSolvedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SolvePuzzleActivity"
+            android:exported="false" />
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false" />
@@ -18,22 +24,10 @@
             android:name=".ResetActivity"
             android:exported="false" />
         <activity
-            android:name=".BelfastSolvedActivity"
-            android:exported="false" />
-        <activity
             android:name=".SelectSolvedLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".BallycastleSolvedActivity"
-            android:exported="false" />
-        <activity
             android:name=".LocationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BelfastActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BallycastleActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

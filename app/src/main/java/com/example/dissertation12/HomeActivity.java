@@ -25,11 +25,6 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity implements SensorEventListener
 {
-
-    private static final String[] ACTIVTITY_PERMISSION = {
-            Manifest.permission.ACTIVITY_RECOGNITION
-    };
-
     Button solvePuzzles, completePuzzles, howToPlay, logout, allowTrackerOnSleep;
     TextView textViewStepCounter;
     private SensorManager sensorManager;
@@ -37,11 +32,10 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     private boolean isCounterSensorPresent;
     int stepCount;
     int oldStepCount;
-    int stepCoinsAchieved;
     int hintCoinsAwarded;
     boolean coinAwardedAlready = false;
     private boolean userAllowsTrackingOnPause;
-    DBHelper MyDB;
+
     int spUserID;
 
 
@@ -50,8 +44,6 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        verifyPermission();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         textViewStepCounter = findViewById(R.id.textViewStepCounter);
@@ -62,7 +54,6 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         logout = (Button) findViewById(R.id.btnlogout);
         allowTrackerOnSleep = findViewById(R.id.btnAllowUserToTrackDuringSleep);
 
-        MyDB = new DBHelper(HomeActivity.this);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -174,11 +165,11 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                         + System.lineSeparator() + System.lineSeparator()
                         + "WARNING"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips. The use of 'The ' as the first word is not allowed when answering. Every business could logically have 'the ' therefore being redundant. Words like 'theory' or 'theme' can still be used as the first word."
+                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips."
                         + System.lineSeparator() + System.lineSeparator()
                         + "Unlocking and using hint coins"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 4000 steps so this can be 4000, 8000, 4000 x n, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
+                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 4000 steps so this can be 4000, 8000, 12000, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
                         + System.lineSeparator() + System.lineSeparator()
                         + "A hint can be earned while not on the home screen however you will not be notified if that is the case. The hint coin will still be added and if you are solving a puzzle and buy a hint, it may not reduce the counter by 1. This will be the cause. Otherwise, navigating the screens will update the hint coin counter."
                         + System.lineSeparator() + System.lineSeparator()
@@ -210,18 +201,6 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                 startActivity(intent);
             }
         });
-    }
-
-    private void verifyPermission()
-    {
-        Log.d(TAG,"verify Permissions: checking Permisssions.");
-
-        int permisssionPedometer = ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACTIVITY_RECOGNITION);
-
-        if (permisssionPedometer != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(HomeActivity.this, ACTIVTITY_PERMISSION, 1);
-        }
     }
 
     @Override
@@ -302,6 +281,9 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
 
     private void updateUserHintAmount(int hintCoinsAwarded)
     {
+        DBHelper MyDB;
+        MyDB = new DBHelper(HomeActivity.this);
+
         int userHintAmount = MyDB.getUserHintAmount(spUserID);
         int updatedUserAmount = userHintAmount + hintCoinsAwarded;
         MyDB.updateHintAmount(spUserID, updatedUserAmount);

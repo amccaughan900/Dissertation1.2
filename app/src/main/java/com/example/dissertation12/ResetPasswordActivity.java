@@ -17,7 +17,6 @@ public class ResetPasswordActivity extends AppCompatActivity
 
     EditText password, repassword;
     Button signup, signin, btnreset;
-    DBHelper MyDB;
     int spUserID;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,8 +29,6 @@ public class ResetPasswordActivity extends AppCompatActivity
         signup = (Button) findViewById(R.id.btnsignup);
         signin = (Button) findViewById(R.id.btnsignin);
         btnreset = findViewById(R.id.btnreset);
-
-        MyDB = new DBHelper(this);
 
         resetUser();
 
@@ -58,6 +55,9 @@ public class ResetPasswordActivity extends AppCompatActivity
 
     private void resetUser()
     {
+        DBHelper MyDB;
+        MyDB = new DBHelper(this);
+
         btnreset.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -105,7 +105,8 @@ public class PuzzlesSolvedActivity extends AppCompatActivity
         DBHelper MyDB;
         MyDB = new DBHelper(this);
 
-        puzzleSolvedAdapter = new ArrayAdapter<>(PuzzlesSolvedActivity.this, android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
+        puzzleSolvedAdapter = new ArrayAdapter<>(PuzzlesSolvedActivity.this,
+                android.R.layout.simple_list_item_1, MyDB.selectAllSolved(spUserID, currentRegionID));
         listviewPuzzlesSolved.setAdapter(puzzleSolvedAdapter);
     }
 }

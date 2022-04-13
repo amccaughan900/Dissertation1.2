@@ -39,7 +39,7 @@ public class SolvePuzzleActivity extends AppCompatActivity
             "Puzzle 10: Owning something together and a famous female country-pop singer",
             "Puzzle 11: Ususal award for being runners-up and an extremely steep incline made of rock",
             "Puzzle 12: I never knew Sherlock Holmes sidekick was struggling with his sight",
-            "Puzzle 13: This area on Earth has less area disovered than Mars and a place of rest and safety",
+            "Puzzle 13: This area on Earth has less area discovered than Mars and a place of rest and safety",
             "Puzzle 14: Herb and a short term for a company",
             "Puzzle 15: A tool used to cut metal wiring",
             "Puzzle 16: Angels are usually depicted to have this above their head",
@@ -64,7 +64,7 @@ public class SolvePuzzleActivity extends AppCompatActivity
             "Puzzle 7: A lot of these parts make up a puzzle",
             "Puzzle 8: This is worn on a foot and a predefined area.",
             "Puzzle 9: A mythical creature that depicts the head of a human and the body of a lion",
-            "Puzzle 10: Usually comes with lemon, especially in drinks, the sun or a torch emits this to a degree",
+            "Puzzle 10: Usually comes with lemon, especially in drinks. The sun or a torch emits this to a degree",
             "Puzzle 11: Many people have done this with a blanket or duvet if they are cold",
             "Puzzle 12: Entering the world for the first time and growing up in the same place",
             "Puzzle 13: The name of this business is very ironic, something that is trash whilst also being clean.",
@@ -177,8 +177,6 @@ public class SolvePuzzleActivity extends AppCompatActivity
                 String itemSelectedPuzzle = spinner_puzzles.getSelectedItem().toString();
                 textview_puzzleSelected.setText(itemSelectedPuzzle);
                 currentSpinnerItem = i;
-
-                Log.i("puzzle", puzzleArray[currentSpinnerItem]);
 
                 int currentPuzzleID = MyDB.getPuzzleID(puzzleArray[currentSpinnerItem]);
 
@@ -295,10 +293,21 @@ public class SolvePuzzleActivity extends AppCompatActivity
             {
                 String userAnswer = edittext_answer.getText().toString();
 
-                userAnswer = userAnswer.replaceAll("\'","");
                 String lowerCaseUserAnswer = userAnswer.toLowerCase();
+                lowerCaseUserAnswer = lowerCaseUserAnswer.replaceAll("\'","");
+                lowerCaseUserAnswer = lowerCaseUserAnswer.replaceAll(" ", "");
 
-                String checkForInitialThe = lowerCaseUserAnswer.substring(0, 4);
+                String checkForInitialThe = "";
+
+                if (lowerCaseUserAnswer.length() >= 4)
+                {
+                    checkForInitialThe = lowerCaseUserAnswer.substring(0, 4);
+                }
+                else
+                {
+                    checkForInitialThe = "";
+                }
+
                 if (checkForInitialThe.equals("the "))
                 {
                     lowerCaseUserAnswer = lowerCaseUserAnswer.replaceFirst("the ", "");
@@ -306,7 +315,7 @@ public class SolvePuzzleActivity extends AppCompatActivity
 
                 int puzzleNumber = currentSpinnerItem + 1;
 
-                if(lowerCaseUserAnswer.equals(""))
+                if(userAnswer.equals(""))
                 {
                     Toast.makeText(SolvePuzzleActivity.this, "Please enter an answer", Toast.LENGTH_SHORT).show();
                 }

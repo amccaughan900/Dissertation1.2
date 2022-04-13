@@ -60,6 +60,13 @@ public class MainActivity extends AppCompatActivity
                 String repass = repassword.getText().toString();
                 String secretAnswer = editTextsecretAnswer.getText().toString();
 
+                SharedPreferences removeUser = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor deleteCurrentUser = removeUser.edit();
+
+                deleteCurrentUser.clear();
+                deleteCurrentUser.commit();
+
+
                 if(user.equals("")||pass.equals("")||repass.equals("")||secretAnswer.equals(""))
                 {
                     Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();

@@ -69,6 +69,12 @@ public class LoginActivity extends AppCompatActivity
                 String user = username.getText().toString();
                 String pass = password.getText().toString();
 
+                SharedPreferences removeUser = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor deleteCurrentUser = removeUser.edit();
+
+                deleteCurrentUser.clear();
+                deleteCurrentUser.commit();
+
                 if(user.equals("")||pass.equals(""))
                 {
                     Toast.makeText(LoginActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
@@ -83,15 +89,16 @@ public class LoginActivity extends AppCompatActivity
 
                         Toast.makeText(LoginActivity.this,user + " signed in successfully", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-
-
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
 
                         editor.putInt("id", thisUserID);
                         editor.apply();
+
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
+
+
 
                     }
                     else

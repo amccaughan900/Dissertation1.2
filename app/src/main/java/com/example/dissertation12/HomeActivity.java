@@ -30,10 +30,10 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager sensorManager;
     private Sensor pedometer;
     private boolean isCounterSensorPresent;
-    int stepCount;
+    int userSteps;
     int oldStepCount;
     int hintCoinsAwarded;
-    boolean coinAwardedAlready = false;
+    boolean coinCannotBeAwarded = false;
     private boolean userAllowsTrackingOnPause;
 
     int spUserID;
@@ -45,7 +45,11 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        SharedPreferences getUser = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        spUserID = getUser.getInt("id", 0);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         textViewStepCounter = findViewById(R.id.textViewStepCounter);
 
         solvePuzzles = (Button) findViewById(R.id.btnsolvepuzzles);
@@ -67,11 +71,6 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
             textViewStepCounter.setText("Walking sensor not found");
             isCounterSensorPresent = false;
         }
-
-        SharedPreferences getUser = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        spUserID = getUser.getInt("id", 0);
-
-
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userAllowsTrackingOnPause = sharedPreferences.getBoolean("Tracker Setting", userAllowsTrackingOnPause);
@@ -147,11 +146,9 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         });
 
         howToPlay.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
+        {   @Override
             public void onClick(View view)
-            {
-                AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
+            { AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
                 alertDialog.setTitle("How to play");
                 alertDialog.setMessage("The aim of the game is to guess puzzles based on businesses and heritage sites in a region. Users are given clues that are word plays or definitions of the words used in the answer."
                         + System.lineSeparator() + System.lineSeparator()
@@ -161,21 +158,20 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                         + System.lineSeparator() + System.lineSeparator()
                         + "Answer: Burger King"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Some clues may show this symbol _ . This represents the word in the answer so an example may be puzzle1: _ shore. The answer would be sea as it fits into sea shore"
+                        + "Some clues may show this symbol '_'. This represents the word in the answer, an example may be puzzle1: '_' shore. The answer would be sea, as it fits into sea shore"
                         + System.lineSeparator() + System.lineSeparator()
                         + "WARNING"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation if a business may have extra words. An example might be chipco or chipco fish and chips."
+                        + "When entering answers, there can be up to two different answers. Both are the same answer but just a slight variation, if a business may have extra words. An example might be chipco, or chipco fish and chips."
                         + System.lineSeparator() + System.lineSeparator()
                         + "Unlocking and using hint coins"
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 4000 steps so this can be 4000, 8000, 12000, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
+                        + "Puzzles have extra clues that can be unlocked with hint coins. These are earned by walking 4000 steps, so this can be 4000, 8000, 12000, etc, or by correctly answering four puzzles in one region. Each hint will cost 1 hint coin."
                         + System.lineSeparator() + System.lineSeparator()
-                        + "A hint can be earned while not on the home screen however you will not be notified if that is the case. The hint coin will still be added and if you are solving a puzzle and buy a hint, it may not reduce the counter by 1. This will be the cause. Otherwise, navigating the screens will update the hint coin counter."
+                        + "A hint can be earned while not on the home screen however, you will not be notified if that is the case. The hint coin will still be added. If you are solving a puzzle and buy a hint, it may not reduce the counter by 1. This will be the cause. Otherwise, navigating the screens will update the hint coin counter."
                         + System.lineSeparator() + System.lineSeparator()
-                        + "Users can turn tracking on and off during sleep at any time on the home screen. If you are confused about what sleep means, it means when the user has the app active but not currently opened. This means you can earn coins without having to keep the screen active as long as you're walking and the button 'tracker on sleep' is switched to on. Ensure the text within the button is turned on for sleep mode to be on. Once the app is fully closed, it will stop."
+                        + "Users can turn tracking on and off during sleep at any time on the home screen. If you are confused about what sleep means, it is when the user has the app active but not currently opened. This means you can earn coins without having to keep the screen active as long as you're walking and the button 'tracker on sleep' is switched to on. Ensure the text within the button is turned on for sleep mode to be on. Once the app is fully closed, it will stop and the button will reset to off, upon opening again."
                 );
-
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener()
                         {
@@ -185,7 +181,6 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                                 dialog.dismiss();
                             }
                         });
-
                 alertDialog.show();
             }
         });
@@ -208,33 +203,63 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     {
         if (sensorEvent.sensor == pedometer)
         {
-
-            stepCount = (int) sensorEvent.values[0];
-            coinAwardedAlready = false;
-
             SharedPreferences getOldSteps = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             oldStepCount = getOldSteps.getInt("User steps before next activity", 0);
 
-            if (oldStepCount == stepCount)
+            int stepCount = (int) sensorEvent.values[0];
+
+            if (stepCount == oldStepCount)
             {
-                coinAwardedAlready = true;
-            }
+                DBHelper MyDB;
+                MyDB = new DBHelper(this);
+                int userSteps = MyDB.getUserStepAmount(spUserID);
 
-            if (stepCount % 4000 == 0 && coinAwardedAlready == false)
+                textViewStepCounter.setText("Steps walked: " + String.valueOf(userSteps));
+            }
+            else
             {
-                hintCoinsAwarded = 1;
+                DBHelper MyDB;
+                MyDB = new DBHelper(this);
+                int userSteps = MyDB.getUserStepAmount(spUserID);
 
-                updateUserHintAmount(hintCoinsAwarded);
+                userSteps = userSteps+ 1;
+                MyDB.updateUserStepAmount(spUserID, userSteps);
+
+                if (userSteps % 4000 == 0)
+                {
+                    hintCoinsAwarded = 1;
+
+                    int userHintAmount = MyDB.getUserHintAmount(spUserID);
+                    int updatedUserAmount = userHintAmount + hintCoinsAwarded;
+                    MyDB.updateHintAmount(spUserID, updatedUserAmount);
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
+                    alertDialog.setTitle("Congratulations!");
+                    alertDialog.setMessage("By walking " + userSteps + " steps, you have earned a hint coin");
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Continue",
+                            new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i)
+                                {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    alertDialog.show();
+                }
+
+                textViewStepCounter.setText("Steps walked: " + String.valueOf(userSteps));
+
+                oldStepCount = stepCount;
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putInt("User steps before next activity", oldStepCount);
+                editor.apply();
             }
-            //String steps = String.valueOf(event.values[0]);
-            textViewStepCounter.setText("Steps walked: " + String.valueOf(stepCount));
-
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putInt("User steps before next activity", oldStepCount);
-            editor.apply();
-
         }
     }
 
@@ -277,33 +302,5 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
         {
             sensorManager.registerListener(this, pedometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
-    }
-
-    private void updateUserHintAmount(int hintCoinsAwarded)
-    {
-        DBHelper MyDB;
-        MyDB = new DBHelper(HomeActivity.this);
-
-        int userHintAmount = MyDB.getUserHintAmount(spUserID);
-        int updatedUserAmount = userHintAmount + hintCoinsAwarded;
-        MyDB.updateHintAmount(spUserID, updatedUserAmount);
-        oldStepCount = stepCount;
-        coinAwardedAlready = true;
-
-        AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
-        alertDialog.setTitle("Congratulations!");
-        alertDialog.setMessage("By walking " + stepCount + " steps, you have earned a hint coin");
-
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Continue",
-                new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i)
-                    {
-                        dialog.dismiss();
-                    }
-                });
-
-        alertDialog.show();
     }
 }

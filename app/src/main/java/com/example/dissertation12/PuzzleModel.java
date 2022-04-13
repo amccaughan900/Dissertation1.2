@@ -24,6 +24,13 @@ public class PuzzleModel
             puzzleAnswer2 = "N/A";
         }
 
+        else
+        {
+            puzzleAnswer2 = puzzleAnswer2.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
+        }
+
+        puzzleAnswer = puzzleAnswer.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
+
         return System.lineSeparator() + puzzleName + System.lineSeparator() + System.lineSeparator() +
                 "Puzzle Hint: " + puzzleHint + System.lineSeparator() + System.lineSeparator() +
                 "Puzzle Answer: " + puzzleAnswer + System.lineSeparator() + System.lineSeparator() +

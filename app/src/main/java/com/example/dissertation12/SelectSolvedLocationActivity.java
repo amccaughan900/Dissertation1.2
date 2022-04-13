@@ -12,6 +12,7 @@ import android.widget.Button;
 public class SelectSolvedLocationActivity extends AppCompatActivity
 {
 
+    //Widgets variables
     Button home, solvedBallycastle, solvedBelfast;
 
     @Override
@@ -20,10 +21,12 @@ public class SelectSolvedLocationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_solved_location);
 
+        //Widgets being applied variables
         home = findViewById(R.id.btnToHome);
         solvedBallycastle = findViewById(R.id.btnToBallycastleSolved);
         solvedBelfast = findViewById(R.id.btnToBelfastSolved);
 
+        //Navigation button to HomeActivity.class
         home.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -34,6 +37,7 @@ public class SelectSolvedLocationActivity extends AppCompatActivity
             }
         });
 
+        //Navigation button to Ballycastle theme, PuzzlesSolvedActivity.class
         solvedBallycastle.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -42,6 +46,7 @@ public class SelectSolvedLocationActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), PuzzlesSolvedActivity.class);
                 startActivity(intent);
 
+                //Save region ID in shared preferences as 1 to represent Ballycastle.
                 int regionID = 1;
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -51,11 +56,13 @@ public class SelectSolvedLocationActivity extends AppCompatActivity
             }
         });
 
+        //Navigation button to Belfast theme, PuzzlesSolvedActivity.class
         solvedBelfast.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                //Save region ID in shared preferences as 2 to represent Belfast.
                 int regionID = 2;
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();

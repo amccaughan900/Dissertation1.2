@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class ResetActivity extends AppCompatActivity
 {
-
+    //Widget variables
     EditText username, editTextsecretAnswer;
     Button signup, signin, btnreset;
     @Override
@@ -23,14 +23,17 @@ public class ResetActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
 
-        username = (EditText) findViewById(R.id.username);
+        //Applies widgets to variables
+        username =  findViewById(R.id.username);
         editTextsecretAnswer = findViewById(R.id.secretAnswer);
         btnreset = findViewById(R.id.btnreset);
-        signup = (Button) findViewById(R.id.btnsignup);
-        signin = (Button) findViewById(R.id.btnsignin);
+        signup =  findViewById(R.id.btnsignup);
+        signin =  findViewById(R.id.btnsignin);
 
-        registerUser();
+        //Method called to check if user is allowed to reset their password
+        resetPassed();
 
+        //Navigation button to LoginActivity.class
         signin.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -41,6 +44,7 @@ public class ResetActivity extends AppCompatActivity
             }
         });
 
+        //Navigation button to MainActivity.class
         signup.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -52,19 +56,23 @@ public class ResetActivity extends AppCompatActivity
         });
     }
 
-    private void registerUser()
+    private void resetPassed()
     {
+        //DBHelper called
         DBHelper MyDB;
         MyDB = new DBHelper(this);
 
+        //When button reset is clicked
         btnreset.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                //Convert input fields into string
                 String user = username.getText().toString();
                 String secretAnswer = editTextsecretAnswer.getText().toString();
 
+                //If any fields are left blank
                 if(user.equals("")||secretAnswer.equals(""))
                 {
                     Toast.makeText(ResetActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
@@ -72,18 +80,22 @@ public class ResetActivity extends AppCompatActivity
 
                 else
                 {
+                    //Checks if username and secret answer exists in the database
                     Boolean checkUserSecretAnswer = MyDB.checkResetAllowed(user, secretAnswer);
 
+                    //If it does exist
                     if(checkUserSecretAnswer == true)
                     {
+                        //Get user ID
                         int thisUserID = MyDB.getUserID(user);
 
                         Toast.makeText(ResetActivity.this,"Reset check passed", Toast.LENGTH_SHORT).show();
 
+                        //Navigate to ResetPasswordActivity.class
                         Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
                         startActivity(intent);
 
-
+                        //Save user ID in shared preferences
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -91,6 +103,7 @@ public class ResetActivity extends AppCompatActivity
                         editor.apply();
 
                     }
+                    //If user has enter the wrong user name or secret answer
                     else
                     {
                         Toast.makeText(ResetActivity.this, "Incorrect username or secret answer", Toast.LENGTH_SHORT).show();

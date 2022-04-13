@@ -273,7 +273,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                 MyDB.updateUserStepAmount(spUserID, userSteps);
 
                 //Rewards users if they walked 4000 steps or a multiplication of 4000.
-                if (userSteps % 20 == 0)
+                if (userSteps % 4000 == 0)
                 {
                     //User earns a hint coin
                     hintCoinsAwarded = 1;

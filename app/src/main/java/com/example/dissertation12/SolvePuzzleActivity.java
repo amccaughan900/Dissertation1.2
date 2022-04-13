@@ -359,8 +359,6 @@ public class SolvePuzzleActivity extends AppCompatActivity
                 String lowerCaseUserAnswer = userAnswer.toLowerCase();
                 //Replaces all apostrophes with nothing
                 lowerCaseUserAnswer = lowerCaseUserAnswer.replaceAll("\'","");
-                //Replaces all whitespaces with nothing
-                lowerCaseUserAnswer = lowerCaseUserAnswer.replaceAll(" ", "");
 
                 //String to hold first four character of user answer
                 String checkForInitialThe = "";
@@ -383,6 +381,10 @@ public class SolvePuzzleActivity extends AppCompatActivity
                     //Replace the first four characters with blank
                     lowerCaseUserAnswer = lowerCaseUserAnswer.replaceFirst("the ", "");
                 }
+
+
+                //Replaces all whitespaces with nothing
+                lowerCaseUserAnswer = lowerCaseUserAnswer.replaceAll(" ", "");
 
                 //Sets puzzle number ready for check
                 int puzzleNumber = currentSpinnerItem + 1;

@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
     //Hint coin provided when user walks a certain amount of steps
     int hintCoinsAwarded;
     //Boolean to contain if user chooses to have steps tracked while app is on sleep mode
-    private boolean userAllowsTrackingOnPause;
+    private boolean userAllowsTrackingOnPause = false;
     //Used to store current user's ID
     int spUserID;
 
@@ -273,7 +273,7 @@ public class HomeActivity extends AppCompatActivity implements SensorEventListen
                 MyDB.updateUserStepAmount(spUserID, userSteps);
 
                 //Rewards users if they walked 4000 steps or a multiplication of 4000.
-                if (userSteps % 4000 == 0)
+                if (userSteps % 20 == 0)
                 {
                     //User earns a hint coin
                     hintCoinsAwarded = 1;
